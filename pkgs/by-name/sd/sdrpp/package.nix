@@ -4,7 +4,7 @@
   fetchFromGitHub,
   cmake,
   pkg-config,
-  libX11,
+  libx11,
   glfw,
   glew,
   fftwFloat,
@@ -118,7 +118,7 @@ stdenv.mkDerivation (finalAttrs: {
     volk
     zstd
   ]
-  ++ lib.optional stdenv.hostPlatform.isLinux libX11
+  ++ lib.optional stdenv.hostPlatform.isLinux libx11
   ++ lib.optional airspy_source airspy
   ++ lib.optional airspyhf_source airspyhf
   ++ lib.optional bladerf_source libbladeRF
@@ -196,13 +196,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   hardeningDisable = lib.optional stdenv.cc.isClang "format";
 
-  meta = with lib; {
+  meta = {
     description = "Cross-Platform SDR Software";
     homepage = "https://github.com/AlexandreRouma/SDRPlusPlus";
-    license = licenses.gpl3Only;
+    license = lib.licenses.gpl3Only;
     # The DAB decoder is broken upstream. See: https://github.com/AlexandreRouma/SDRPlusPlus/issues/1511
     broken = dab_decoder;
-    maintainers = with maintainers; [
+    maintainers = with lib.maintainers; [
       sikmir
       zaninime
     ];

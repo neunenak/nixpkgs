@@ -39,6 +39,12 @@ let
           inherit hash;
         };
 
+        # Set CGO_ENABLED based on platform:
+        # - Linux: CGO_ENABLED=0 for static linking (avoids LTO plugin issues)
+        # - Darwin: CGO_ENABLED=1 to avoid DNS resolution issues
+        # See: https://github.com/hashicorp/terraform/blob/main/BUILDING.md
+        env.CGO_ENABLED = if stdenv.hostPlatform.isDarwin then "1" else "0";
+
         ldflags = [
           "-s"
           "-w"
@@ -194,9 +200,9 @@ rec {
   mkTerraform = attrs: pluggable (generic attrs);
 
   terraform_1 = mkTerraform {
-    version = "1.14.0";
-    hash = "sha256-G9GyrwELOuzQqTMimC+z2GJUjq+c5YJDoE313JSsX5w=";
-    vendorHash = "sha256-T6baxFk5lrmhyeJgcn7s5cF+utaogSQOD9S5omEKTZg=";
+    version = "1.14.5";
+    hash = "sha256-qy/aS82YLIalVDFje4F7TWzC8OdYGBijuEpbDMlyEKY=";
+    vendorHash = "sha256-NDtBLa8vokrSRDCNX10lQyfMDzTrodoEj5zbDanL4bk=";
     patches = [ ./provider-path-0_15.patch ];
     passthru = {
       inherit plugins;

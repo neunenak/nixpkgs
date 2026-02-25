@@ -136,11 +136,11 @@ stdenv.mkDerivation (finalAttrs: {
     + lib.optionalString nixosTestRunner "-for-vm-tests"
     + lib.optionalString toolsOnly "-utils"
     + lib.optionalString userOnly "-user";
-  version = "10.1.2";
+  version = "10.2.1";
 
   src = fetchurl {
     url = "https://download.qemu.org/qemu-${finalAttrs.version}.tar.xz";
-    hash = "sha256-nXXzMcGly5tuuP2fZPVj7C6rNGyCLLl/izXNgtPxFHk=";
+    hash = "sha256-o3F0d9jiyE1jC//7wg9s0yk+tFqh5trG0MwnaJmRyeE=";
   };
 
   depsBuildBuild = [
@@ -249,8 +249,7 @@ stdenv.mkDerivation (finalAttrs: {
   dontAddStaticConfigureFlags = true;
 
   outputs = [ "out" ] ++ lib.optional enableDocs "doc" ++ lib.optional guestAgentSupport "ga";
-  # On aarch64-linux we would shoot over the Hydra's 2G output limit.
-  separateDebugInfo = !(stdenv.hostPlatform.isAarch64 && stdenv.hostPlatform.isLinux);
+  separateDebugInfo = true;
 
   patches = [
     ./fix-qemu-ga.patch
@@ -430,14 +429,14 @@ stdenv.mkDerivation (finalAttrs: {
   requiredSystemFeatures = [ "big-parallel" ];
 
   meta =
-    with lib;
+
     {
       homepage = "https://www.qemu.org/";
       description = "Generic and open source machine emulator and virtualizer";
-      license = licenses.gpl2Plus;
-      maintainers = with maintainers; [ qyliss ];
+      license = lib.licenses.gpl2Plus;
+      maintainers = with lib.maintainers; [ qyliss ];
       teams = lib.optionals xenSupport xen.meta.teams;
-      platforms = platforms.unix;
+      platforms = lib.platforms.unix;
     }
     # toolsOnly: Does not have qemu-kvm and there's no main support tool
     # userOnly: There's one qemu-<arch> for every architecture
@@ -446,7 +445,7 @@ stdenv.mkDerivation (finalAttrs: {
     }
     # userOnly: https://qemu.readthedocs.io/en/v9.0.2/user/main.html
     // lib.optionalAttrs userOnly {
-      platforms = with platforms; (linux ++ freebsd ++ openbsd ++ netbsd);
+      platforms = with lib.platforms; (linux ++ freebsd ++ openbsd ++ netbsd);
       description = "QEMU User space emulator - launch executables compiled for one CPU on another CPU";
     };
 })

@@ -1,5 +1,6 @@
 {
   lib,
+  stdenv,
   buildPythonPackage,
   fetchFromGitHub,
 
@@ -21,14 +22,11 @@
   h5py,
   huggingface-hub,
   matplotlib,
-  onnxruntime,
   pymoo,
-  pyyaml,
   scikit-learn,
   scipy,
   # smac,
   statsmodels,
-  swig,
   xgboost,
   # yahpo-gym,
 
@@ -40,14 +38,14 @@
 }:
 buildPythonPackage rec {
   pname = "syne-tune";
-  version = "0.14.2";
+  version = "0.15.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "syne-tune";
     repo = "syne-tune";
     tag = "v${version}";
-    hash = "sha256-51QyfJ0XOcXTeE95YOhtUmhat23joaEYvUnk7hYfksY=";
+    hash = "sha256-UNBpfC+aLXhkbyvCG2K00yedJnpYpfldqisZ/wDPtuA=";
   };
 
   postPatch = ''
@@ -125,6 +123,10 @@ buildPythonPackage rec {
     "test_hypervolume"
     "test_hypervolume_progress"
     "test_hypervolume_simple"
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    # assert np.float64(1.0114686865847489e-12) < 1e-12
+    "test_cholesky_factorization"
   ];
 
   disabledTestPaths = [

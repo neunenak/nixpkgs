@@ -226,6 +226,23 @@ let
       '';
     };
 
+    allowUnfreePackages = mkOption {
+      type = with lib.types; listOf str;
+      default = [ ];
+      example = [ "ut1999" ];
+      description = ''
+        Allows specific unfree packages to be used.
+
+        This option composes with `nixpkgs.config.allowUnfreePredicate` by also allowing the listed package names.
+
+        Unlike `nixpkgs.config.allowUnfreePredicate`, this option merges additively, similar to `environment.systemPackages`.
+        This enables defining allowed unfree packages in multiple modules, close to where they are used.
+
+        This avoids the need to centralize all unfree package declarations or globally enable unfree packages via
+        `nixpkgs.config.allowUnfree = true`.
+      '';
+    };
+
     allowBroken = mkOption {
       type = types.bool;
       default = false;
@@ -266,6 +283,38 @@ let
       feature = "build packages with CUDA support by default";
     };
 
+    cudaCapabilities = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        A list of CUDA capabilities to build for.
+
+        Packages may use this option to control device code generation to
+        take advantage of architecture-specific functionality, speed up
+        compile times by producing less device code, or slim package closures.
+
+        For example, you can build for Ada Lovelace GPUs with
+        `cudaCapabilities = [ "8.9" ];`.
+
+        If not provided, the default value is calculated per-package set,
+        derived from a list of GPUs supported by that CUDA version.
+
+        See the [CUDA section](https://nixos.org/manual/nixpkgs/stable/#cuda) in
+        the Nixpkgs manual for more information.
+      '';
+    };
+
+    cudaForwardCompat = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Whether to enable PTX support for future hardware.
+
+        When enabled, packages will include PTX code that can be JIT-compiled
+        for GPUs newer than those explicitly targeted by `cudaCapabilities`.
+      '';
+    };
+
     replaceBootstrapFiles = mkMassRebuild {
       type = types.functionTo (types.attrsOf types.package);
       default = lib.id;
@@ -292,6 +341,22 @@ let
         in
         builtins.mapAttrs (name: prev: replacements.''${prev.outputHash} or prev) prevFiles
       '';
+    };
+
+    replaceStdenv = mkMassRebuild {
+      type = types.nullOr (types.functionTo types.package);
+      default = null;
+      defaultText = literalExpression "null";
+      description = ''
+        A function to replace the standard environment (stdenv).
+
+        The function receives an attribute set with `pkgs` and should return
+        a stdenv derivation.
+
+        This can be used to globally replace the stdenv with a custom one,
+        for example to use ccache or distcc.
+      '';
+      example = literalExpression "{ pkgs }: pkgs.ccacheStdenv";
     };
 
     rocmSupport = mkMassRebuild {
@@ -364,6 +429,23 @@ let
         If the Microsoft Visual Studio license has been accepted.
 
         Please read https://www.visualstudio.com/license-terms/mt644918/ and enable this config if you accept.
+      '';
+    };
+
+    allowDeprecatedx86_64Darwin = mkOption {
+      # `force` does nothing; it’s reserved for forward compatibility
+      # with 26.11. We hide it from the documentation to avoid a
+      # footgun, as it will make the error in 26.11 less useful.
+      type = types.either types.bool (types.enum [ "force" ]) // {
+        inherit (types.bool) description descriptionClass;
+      };
+      default = false;
+      description = ''
+        Silence the warning for the upcoming deprecation of the
+        `x86_64-darwin` platform in Nixpkgs 26.11.
+
+        This does nothing in 25.11, and is provided there for forward
+        compatibility of configurations with 26.05.
       '';
     };
   };

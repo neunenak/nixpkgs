@@ -5,22 +5,19 @@
   buildPythonPackage,
   fetchPypi,
   isodate,
-  pythonOlder,
   setuptools,
   typing-extensions,
 }:
 
 buildPythonPackage rec {
   pname = "azure-mgmt-network";
-  version = "29.0.0";
+  version = "30.1.0";
   pyproject = true;
-
-  disabled = pythonOlder "3.9";
 
   src = fetchPypi {
     pname = "azure_mgmt_network";
     inherit version;
-    hash = "sha256-V3+8dqGV90S5e6xCdeESeffz5jxlnZh3PztKmm4JQ7k=";
+    hash = "sha256-QUZKBTZJYvcRmgToqYPpCTXBoksu86Q6wQoOzJIIcJ8=";
   };
 
   build-system = [ setuptools ];
@@ -39,12 +36,12 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "azure.mgmt.network" ];
 
-  meta = with lib; {
+  meta = {
     description = "Microsoft Azure SDK for Python";
     homepage = "https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/network/azure-mgmt-network";
     changelog = "https://github.com/Azure/azure-sdk-for-python/blob/azure-mgmt-network_${version}/sdk/network/azure-mgmt-network/CHANGELOG.md";
-    license = licenses.mit;
-    maintainers = with maintainers; [
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [
       olcai
       maxwilson
     ];

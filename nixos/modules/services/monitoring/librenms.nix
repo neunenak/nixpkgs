@@ -642,7 +642,7 @@ in
         let
           nginxHasSSL =
             with config.services.nginx.virtualHosts."${cfg.hostname}";
-            onlySSL || enableSSL || addSSL || forceSSL;
+            onlySSL || addSSL || forceSSL;
         in
         ''
           set -euo pipefail
@@ -824,5 +824,8 @@ in
 
   };
 
-  meta.maintainers = with lib.maintainers; [ netali ] ++ lib.teams.wdz.members;
+  meta.maintainers = with lib.maintainers; [
+    netali
+    johannwagner
+  ];
 }

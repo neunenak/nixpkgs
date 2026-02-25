@@ -100,7 +100,7 @@ stdenv.mkDerivation (finalAttrs: {
   ];
   # these fail inside of the sandbox due to missing access
   # to the FUSE device
-  GTEST_FILTER =
+  env.GTEST_FILTER =
     let
       disabledTests = [
         "dwarfs/tools_test.end_to_end/*"
@@ -112,7 +112,6 @@ stdenv.mkDerivation (finalAttrs: {
 
   doInstallCheck = true;
   nativeInstallCheckInputs = [ versionCheckHook ];
-  versionCheckProgramArg = "--version";
   versionCheckProgram = "${placeholder "out"}/bin/dwarfs";
 
   meta = {

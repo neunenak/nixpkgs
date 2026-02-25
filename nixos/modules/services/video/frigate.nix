@@ -53,6 +53,7 @@ let
         cp ${configFileUnchecked} $out
         export CONFIG_FILE=$out
         export PYTHONPATH=${cfg.package.pythonPath}
+        ${cfg.preCheckConfig}
         ${cfg.package.python.interpreter} -m frigate --validate-config || error
       '';
   configFile = if cfg.checkConfig then configFileChecked else configFileUnchecked;
@@ -205,6 +206,16 @@ in
       '';
       description = ''
         Whether to check the configuration at build time.
+      '';
+    };
+
+    preCheckConfig = mkOption {
+      type = types.lines;
+      default = "";
+      description = ''
+        This script gets run before the config is checked. It can be used to,
+        e.g., set environment variables needed or transform the config
+        (available as `$out`) to make it checkable in the sandbox.
       '';
     };
 
@@ -713,8 +724,7 @@ in
       serviceConfig = {
         ExecStartPre = [
           (pkgs.writeShellScript "frigate-clear-cache" ''
-            shopt -s extglob
-            rm --recursive --force /var/cache/frigate/!(model_cache)
+            ${lib.getExe pkgs.findutils} /var/cache/frigate -not -path '/var/cache/frigate/model_cache/*' -type f -delete
           '')
           (pkgs.writeShellScript "frigate-create-writable-config" ''
             cp --no-preserve=mode ${configFile} /run/frigate/frigate.yml
@@ -749,6 +759,9 @@ in
 
         # Sockets/IPC
         RuntimeDirectory = "frigate";
+
+        # Reduce visible process scope to cgroup
+        ProtectProc = "invisible";
       };
     };
   };

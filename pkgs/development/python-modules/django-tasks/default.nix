@@ -1,5 +1,6 @@
 {
   lib,
+  stdenv,
   buildPythonPackage,
   fetchFromGitHub,
   setuptools,
@@ -13,18 +14,19 @@
   fakeredis,
   pytestCheckHook,
   pytest-django,
+  redisTestHook,
 }:
 
 buildPythonPackage rec {
   pname = "django-tasks";
-  version = "0.8.1";
+  version = "0.11.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "RealOrangeOne";
     repo = "django-tasks";
     tag = version;
-    hash = "sha256-fXXqPmpyIq+66okWDmTIBaoaslY8BSILXjJWn8cXnMM=";
+    hash = "sha256-WU2TQa4FMEqtNtetH4qAyXqkrP/9PTw/K63MfUWEWGw=";
   };
 
   build-system = [
@@ -48,12 +50,16 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "django_tasks" ];
 
+  # redis hook does not support darwin
+  doCheck = !stdenv.hostPlatform.isDarwin;
+
   nativeCheckInputs = [
-    dj-database-url
     django-rq
+    dj-database-url
     fakeredis
     pytestCheckHook
     pytest-django
+    redisTestHook
   ];
 
   disabledTests = [
@@ -67,6 +73,8 @@ buildPythonPackage rec {
     "test_prunes_tasks"
     # AssertionError: 'Run maximum tasks (2)' not found in ''
     "test_max_tasks"
+    # AssertionError: <django_tasks.backends.database.backend.DatabaseBackend object at 0x7ffff3fa3cd0> is not an instance of <class 'django_tasks.backends.immediate.ImmediateBackend'>
+    "test_uses_lib_tasks_by_default"
   ];
 
   preCheck = ''

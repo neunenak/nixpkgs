@@ -10,17 +10,17 @@
   libGLU,
   mkLibretroCore,
   openssl,
-  xorg,
+  libx11,
 }:
 mkLibretroCore {
   core = "play";
-  version = "0-unstable-2025-11-03";
+  version = "0-unstable-2026-02-16";
 
   src = fetchFromGitHub {
     owner = "jpd002";
     repo = "Play-";
-    rev = "77c62d3a942e219bc9d072b4800fa0881208ce2a";
-    hash = "sha256-ROrANubftSJwGl9THdAIRhSFOy1uHZ6v2kAmYWLDhN0=";
+    rev = "2a125b5d28cb2c02cbd2fdb00ce268581ffca05b";
+    hash = "sha256-tYB2xcIU7O6BizHSSS4CPQMbLsnlHZKqcx26WypWt1E=";
     fetchSubmodules = true;
   };
 
@@ -32,7 +32,7 @@ mkLibretroCore {
     icu
     libGL
     libGLU
-    xorg.libX11
+    libx11
   ];
   extraNativeBuildInputs = [ cmake ];
   makefile = "Makefile";

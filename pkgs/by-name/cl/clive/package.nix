@@ -9,18 +9,18 @@
   versionCheckHook,
   nix-update-script,
 }:
-buildGoModule rec {
+buildGoModule (finalAttrs: {
   pname = "clive";
-  version = "0.12.15";
+  version = "0.12.16";
 
   src = fetchFromGitHub {
     owner = "koki-develop";
     repo = "clive";
-    tag = "v${version}";
-    hash = "sha256-WOcqcyhyv72tNmm7mETjboStesfFfVVAmN2ZdLFd1Uc=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-bZzK7RLAStRb9R3V/TK6tZV6yv1C7MGslAhhpWDzdWk=";
   };
 
-  vendorHash = "sha256-QfHCrou7Lr1CrRQqvLEnWTtQk8aDigkm4SBArLjMkyo=";
+  vendorHash = "sha256-BDspmaATLIfwyqxwJNJ24vpEETUWGVbobHWD2NRaOi4=";
   subPackages = [ "." ];
   buildInputs = [ ttyd ];
   nativeBuildInputs = [
@@ -29,7 +29,7 @@ buildGoModule rec {
   ];
 
   ldflags = [
-    "-X github.com/koki-develop/clive/cmd.version=v${version}"
+    "-X github.com/koki-develop/clive/cmd.version=v${finalAttrs.version}"
   ];
 
   postInstall = ''
@@ -43,7 +43,6 @@ buildGoModule rec {
   '';
 
   nativeInstallCheckInputs = [ versionCheckHook ];
-  versionCheckProgramArg = "--version";
   doinstallCheck = true;
 
   passthru.updateScript = nix-update-script { };
@@ -51,9 +50,9 @@ buildGoModule rec {
   meta = {
     description = "Automates terminal operations";
     homepage = "https://github.com/koki-develop/clive";
-    changelog = "https://github.com/koki-develop/clive/releases/tag/v${version}";
+    changelog = "https://github.com/koki-develop/clive/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ misilelab ];
     mainProgram = "clive";
   };
-}
+})

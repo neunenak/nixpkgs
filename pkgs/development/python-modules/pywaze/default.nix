@@ -7,7 +7,6 @@
   pytest-asyncio,
   pytest-cov-stub,
   pytestCheckHook,
-  pythonOlder,
   respx,
 }:
 
@@ -15,8 +14,6 @@ buildPythonPackage rec {
   pname = "pywaze";
   version = "1.1.1";
   pyproject = true;
-
-  disabled = pythonOlder "3.11";
 
   src = fetchFromGitHub {
     owner = "eifinger";
@@ -38,11 +35,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "pywaze" ];
 
-  meta = with lib; {
+  meta = {
     description = "Module for calculating WAZE routes and travel times";
     homepage = "https://github.com/eifinger/pywaze";
     changelog = "https://github.com/eifinger/pywaze/releases/tag/v${version}";
-    license = licenses.mit;
-    maintainers = with maintainers; [ fab ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ fab ];
   };
 }

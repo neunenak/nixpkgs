@@ -7,7 +7,7 @@
   opentelemetry-sdk,
   pytest-asyncio,
   pytestCheckHook,
-  pythonOlder,
+  pythonAtLeast,
   qcs-api-client-common,
   quil,
   rustPlatform,
@@ -16,19 +16,22 @@
 
 buildPythonPackage rec {
   pname = "qcs-sdk-python";
-  version = "0.21.21";
+  version = "0.21.22";
   pyproject = true;
+
+  # error: the configured Python interpreter version (3.13) is newer than PyO3's maximum supported version (3.12)
+  disabled = pythonAtLeast "3.13";
 
   src = fetchFromGitHub {
     owner = "rigetti";
     repo = "qcs-sdk-rust";
     tag = "python/v${version}";
-    hash = "sha256-xSIkMz+wZvYtgjyW/6Nr4vn6oJZ3X38GNdXJfYchI8A=";
+    hash = "sha256-uaoXSkc8yg+WZONgvRkOARaf9kvLKv6S+K5yMDuXbbA=";
   };
 
   cargoDeps = rustPlatform.fetchCargoVendor {
     inherit pname version src;
-    hash = "sha256-U13R/U6/ugC7m0X2gTpjfOjgzRzTIk95mcMu2GtcNLM=";
+    hash = "sha256-/SkYzQisSACTedC4FsEp4rXXdWV5f64gA33I/Ubu80E=";
   };
 
   buildAndTestSubdir = "crates/python";

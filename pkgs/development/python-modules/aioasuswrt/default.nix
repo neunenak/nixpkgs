@@ -1,6 +1,7 @@
 {
   lib,
   asyncssh,
+  bcrypt,
   buildPythonPackage,
   fetchFromGitHub,
   pytest-cov-stub,
@@ -12,19 +13,22 @@
 
 buildPythonPackage rec {
   pname = "aioasuswrt";
-  version = "1.5.1";
+  version = "2.0.8";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "kennedyshead";
     repo = "aioasuswrt";
-    tag = "v${version}";
-    hash = "sha256-4bVDho1JtNoWW3ueDgfu+GfRtrxWP6XxIK5R3BXgqfQ=";
+    tag = "V${version}";
+    hash = "sha256-ax2XvZjZ1P8p80JW2WZAy2pdBKgwxuEaf6Erdna8E1s=";
   };
 
   build-system = [ setuptools ];
 
-  dependencies = [ asyncssh ];
+  dependencies = [
+    asyncssh
+    bcrypt
+  ];
 
   nativeCheckInputs = [
     pytest-asyncio
@@ -35,11 +39,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "aioasuswrt" ];
 
-  meta = with lib; {
+  meta = {
     description = "Python module for Asuswrt";
     homepage = "https://github.com/kennedyshead/aioasuswrt";
     changelog = "https://github.com/kennedyshead/aioasuswrt/releases/tag/${src.tag}";
-    license = licenses.mit;
-    maintainers = with maintainers; [ fab ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ fab ];
   };
 }

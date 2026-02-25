@@ -1,28 +1,28 @@
 {
   "game": {
     "latest": {
-      "linux": "53.05",
+      "linux": "53.10",
       "darwin": "0.47.05"
     },
     "versions": {
-      "53.05": {
+      "53.10": {
         "df": {
-          "version": "53.05",
+          "version": "53.10",
           "urls": {
             "linux": {
-              "url": "https://www.bay12games.com/dwarves/df_53_05_linux.tar.bz2",
-              "outputHash": "sha256-9x08aZHZJbH2JUTqFTPY7gkfqjgXHAnYJ0dZ0NimzsA="
+              "url": "https://www.bay12games.com/dwarves/df_53_10_linux.tar.bz2",
+              "outputHash": "sha256-JdG48F1EJ1lvnJQUq7fMCgBKWXX2nyJj8odkOtDi/fY="
             }
           }
         },
         "hack": {
-          "version": "53.05-r1",
+          "version": "53.10-r1",
           "git": {
             "url": "https://github.com/DFHack/dfhack.git",
-            "revision": "53.05-r1",
-            "outputHash": "sha256-PTDP+UxLHG4VzrHDDwVaerEasSg9m8ut8ZYgN0LO/C4="
+            "revision": "53.10-r1",
+            "outputHash": "sha256-PSmZY8QK9hHgxh+VHYn1bFN9LScpBjpVzFaGHTEGCaY="
           },
-          "xmlRev": "2bd33eba052f6ea3f65f4a22670029f2311b07b4"
+          "xmlRev": "3826f45ef0fad7bd3357a6d55d5c9d28b56614c2"
         }
       },
       "52.05": {

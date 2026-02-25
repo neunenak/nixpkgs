@@ -1,7 +1,7 @@
 {
   lib,
   buildPythonPackage,
-  fetchPypi,
+  fetchFromGitHub,
   ddt,
   openstackdocstheme,
   osc-lib,
@@ -18,7 +18,7 @@
   python-manilaclient,
   python-mistralclient,
   python-neutronclient,
-  python-openstackclient,
+  python-octaviaclient,
   python-watcherclient,
   python-zaqarclient,
   python-zunclient,
@@ -27,20 +27,27 @@
   setuptools,
   sphinxHook,
   sphinxcontrib-apidoc,
-  stestr,
-  testers,
+  stestrCheckHook,
+  versionCheckHook,
 }:
 
-buildPythonPackage rec {
+buildPythonPackage (finalAttrs: {
   pname = "python-openstackclient";
-  version = "8.2.0";
+  version = "9.0.0";
   pyproject = true;
 
-  src = fetchPypi {
-    pname = "python_openstackclient";
-    inherit version;
-    hash = "sha256-1hKvGN/GbMjzHmzpZpC2wnOt6KJA7EC39INaiJb7vgE=";
+  src = fetchFromGitHub {
+    owner = "openstack";
+    repo = "python-openstackclient";
+    tag = finalAttrs.version;
+    hash = "sha256-iqHm3vOENStdGI53Ggln/gWVnF3Lyomel9OFmwz2CJc=";
   };
+
+  patches = [
+    ./fix-pyproject.patch
+  ];
+
+  env.PBR_VERSION = finalAttrs.version;
 
   build-system = [
     openstackdocstheme
@@ -64,17 +71,25 @@ buildPythonPackage rec {
   nativeCheckInputs = [
     ddt
     requests-mock
-    stestr
+    stestrCheckHook
   ];
 
-  checkPhase = ''
-    runHook preCheck
-    stestr run -E \
-      "openstackclient.tests.unit.volume.v3.test_volume.(TestVolumeCreate|TestVolumeShow)"
-    runHook postCheck
-  '';
+  disabledTestsRegex = [
+    "openstackclient.tests.unit.common.test_module.TestModuleList*"
+  ];
 
-  pythonImportsCheck = [ "openstackclient" ];
+  pythonImportsCheck = [
+    "openstackclient"
+    "openstackclient.api"
+    "openstackclient.common"
+    "openstackclient.compute"
+    "openstackclient.identity"
+    "openstackclient.image"
+    "openstackclient.network"
+    "openstackclient.object"
+    "openstackclient.volume"
+    "openstackclient.tests"
+  ];
 
   optional-dependencies = {
     # See https://github.com/openstack/python-openstackclient/blob/master/doc/source/contributor/plugins.rst
@@ -89,24 +104,24 @@ buildPythonPackage rec {
       python-manilaclient
       python-mistralclient
       python-neutronclient
+      python-octaviaclient
       python-watcherclient
       python-zaqarclient
       python-zunclient
     ];
   };
 
-  passthru = {
-    tests.version = testers.testVersion {
-      package = python-openstackclient;
-      command = "openstack --version";
-    };
-  };
+  nativeInstallCheckInputs = [
+    versionCheckHook
+  ];
+  doInstallCheck = true;
 
-  meta = with lib; {
+  meta = {
     description = "OpenStack Command-line Client";
     mainProgram = "openstack";
-    homepage = "https://github.com/openstack/python-openstackclient";
-    license = licenses.asl20;
-    teams = [ teams.openstack ];
+    homepage = "https://docs.openstack.org/python-openstackclient/latest/";
+    downloadPage = "https://github.com/openstack/python-openstackclient/releases/tag/${finalAttrs.src.tag}";
+    license = lib.licenses.asl20;
+    teams = [ lib.teams.openstack ];
   };
-}
+})

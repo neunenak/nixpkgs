@@ -110,7 +110,9 @@ stdenv.mkDerivation rec {
     argp-standalone
   ];
 
-  NIX_LDFLAGS = lib.optionalString (!stdenv.hostPlatform.isGnu) "-largp";
+  env = lib.optionalAttrs (!stdenv.hostPlatform.isGnu) {
+    NIX_LDFLAGS = "-largp";
+  };
 
   enableParallelBuilding = true;
   dontWrapQtApps = true;
@@ -121,13 +123,13 @@ stdenv.mkDerivation rec {
     wrapQtApp "$bin/bin/ffado-mixer"
   '';
 
-  meta = with lib; {
+  meta = {
     homepage = "http://www.ffado.org";
     description = "FireWire audio drivers";
-    license = licenses.gpl3;
-    maintainers = with maintainers; [
+    license = lib.licenses.gpl3;
+    maintainers = with lib.maintainers; [
       michojel
     ];
-    platforms = platforms.linux;
+    platforms = lib.platforms.linux;
   };
 }

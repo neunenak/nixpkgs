@@ -6,7 +6,6 @@
   fetchFromGitHub,
   keyring,
   pytestCheckHook,
-  pythonOlder,
   playwright,
   setuptools,
   setuptools-scm,
@@ -14,16 +13,14 @@
 
 buildPythonPackage rec {
   pname = "pycookiecheat";
-  version = "0.8.0";
+  version = "0.11";
   pyproject = true;
-
-  disabled = pythonOlder "3.9";
 
   src = fetchFromGitHub {
     owner = "n8henrie";
     repo = "pycookiecheat";
-    tag = "v${version}";
-    hash = "sha256-jOyTfh2ZhKW/pMU7T5tfxaM0l/g59N+mirnbc0FLPbQ=";
+    tag = version;
+    hash = "sha256-hP4J41ctAkrC6HIeKu6ITzK3W0PB7/tCz0cjP42I/J8=";
   };
 
   pythonRelaxDeps = [
@@ -64,12 +61,12 @@ buildPythonPackage rec {
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [ "test_slack_config" ];
 
-  meta = with lib; {
+  meta = {
     description = "Borrow cookies from your browser's authenticated session for use in Python scripts";
     homepage = "https://github.com/n8henrie/pycookiecheat";
-    changelog = "https://github.com/n8henrie/pycookiecheat/blob/v${version}/CHANGELOG.md";
-    license = licenses.mit;
-    maintainers = with maintainers; [
+    changelog = "https://github.com/n8henrie/pycookiecheat/blob/${src.tag}/CHANGELOG.md";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [
       fab
       n8henrie
     ];

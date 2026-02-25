@@ -7,16 +7,16 @@
 
 buildNpmPackage {
   pname = "coc-rust-analyzer";
-  version = "0-unstable-2025-11-01";
+  version = "0-unstable-2026-02-01";
 
   src = fetchFromGitHub {
     owner = "fannheyward";
     repo = "coc-rust-analyzer";
-    rev = "6cc74fcaed6b011b98e9f8483fb608dff53147be";
-    hash = "sha256-2XSx4eR9GgMbWY+IOEKuhCAVesxoZbh/KsLr0It0Cks=";
+    rev = "78cef805723355af4a172714915c74529a562cf3";
+    hash = "sha256-KivOKm0wJKM9/i8/KsCfrG1O2LBAKk2zMi1/7CevylI=";
   };
 
-  npmDepsHash = "sha256-94kuqDNsCcPuvTVeprEdjNOPw8pdpDp3IOvuoKdSEgU=";
+  npmDepsHash = "sha256-dwQs/xayR7lp6ShASUPR1uvrJQ6fQmDjKNVob66j76M=";
 
   passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
@@ -24,6 +24,6 @@ buildNpmPackage {
     description = "Rust-analyzer extension for coc.nvim";
     homepage = "https://github.com/fannheyward/coc-rust-analyzer";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ pyrox0 ];
+    maintainers = [ ];
   };
 }

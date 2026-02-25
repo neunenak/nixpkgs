@@ -25,14 +25,14 @@
 
 buildPythonPackage rec {
   pname = "pytask";
-  version = "0.5.7";
+  version = "0.5.8";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "pytask-dev";
     repo = "pytask";
     tag = "v${version}";
-    hash = "sha256-qXqmI3IRJUTTsTdLlkjHc5+Vdct4j4MJYgnrRx3gTR8=";
+    hash = "sha256-tQUvqqbFUO3cw+dVPfCKiYyhwX31vqUBXr7GrRfPC+A=";
   };
 
   build-system = [
@@ -80,11 +80,11 @@ buildPythonPackage rec {
     "test_pdb_interaction_capturing_simple"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Workflow management system that facilitates reproducible data analyses";
     homepage = "https://github.com/pytask-dev/pytask";
     changelog = "https://github.com/pytask-dev/pytask/releases/tag/${src.tag}";
-    license = licenses.mit;
-    maintainers = with maintainers; [ erooke ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ erooke ];
   };
 }

@@ -7,19 +7,20 @@
   rust-jemalloc-sys,
   zlib,
   gitMinimal,
+  nix-update-script,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "biome";
-  version = "2.3.6";
+  version = "2.3.15";
 
   src = fetchFromGitHub {
     owner = "biomejs";
     repo = "biome";
     rev = "@biomejs/biome@${finalAttrs.version}";
-    hash = "sha256-wi0dkD9AlMYyGS/y96FMCOJKjRuo0b4pHpva+R1W3Yg=";
+    hash = "sha256-HRiQohI6bnV+U9c+XILOWmjGb1tQDJd3CBFNGzJuJ/4=";
   };
 
-  cargoHash = "sha256-GCwJdO43Q5cRw3w1omuIpSxvINN51dJez7Jq4/FQF+A=";
+  cargoHash = "sha256-l1eew5KmT0tpVSLmWquodoYlMavQYbyxmZxl6IRnC48=";
 
   nativeBuildInputs = [ pkg-config ];
 
@@ -33,8 +34,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoBuildFlags = [ "-p=biome_cli" ];
   cargoTestFlags = finalAttrs.cargoBuildFlags ++ [
+    "--"
     # fails due to cargo insta
-    "-- --skip=commands::check::print_json"
+    "--skip=commands::check::print_json"
     "--skip=commands::check::print_json_pretty"
     "--skip=commands::explain::explain_logs"
     "--skip=commands::format::print_json"
@@ -49,6 +51,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
     INSTA_UPDATE = "no";
   };
 
+  postInstall = ''
+    # Installs biome schema aside with the package
+    install -Dm644 packages/@biomejs/biome/configuration_schema.json $out/share/schema.json
+  '';
+
   preCheck = ''
     # tests assume git repository
     git init
@@ -56,6 +63,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # tests assume $BIOME_VERSION is unset
     unset BIOME_VERSION
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Toolchain of the web";
@@ -65,6 +74,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     maintainers = with lib.maintainers; [
       isabelroses
       wrbbz
+      eveeifyeve # Schema
     ];
     mainProgram = "biome";
   };

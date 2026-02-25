@@ -11,7 +11,7 @@
 buildNpmPackage rec {
   pname = "clever-tools";
 
-  version = "4.4.0";
+  version = "4.6.0";
 
   nodejs = nodejs_22;
 
@@ -19,10 +19,10 @@ buildNpmPackage rec {
     owner = "CleverCloud";
     repo = "clever-tools";
     rev = version;
-    hash = "sha256-5LRzYhBcf+C5DgUmeCPu/k52MGuuNjWgXrnP5kl0Z2g=";
+    hash = "sha256-0c2SBArtMUffQ7hd2fH9l5DMGm+UIWNeY/aSU0cUHzg=";
   };
 
-  npmDepsHash = "sha256-PRo5XKBIJiYaiC/7L6ycP7HCJQq/J0HBPYhuzBTO2ZY=";
+  npmDepsHash = "sha256-Quzpdmu9qvJ4P77nsXzqLg3k7tQvuYtvEioDuUSU0+M=";
 
   nativeBuildInputs = [
     installShellFiles
@@ -58,6 +58,6 @@ buildNpmPackage rec {
     description = "Deploy on Clever Cloud and control your applications, add-ons, services from command line";
     license = lib.licenses.asl20;
     mainProgram = "clever";
-    teams = [ lib.teams.clevercloud ];
+    maintainers = [ lib.maintainers.floriansanderscc ];
   };
 }

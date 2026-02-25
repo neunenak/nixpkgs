@@ -49,12 +49,10 @@ let
       outpaths ++ lib.concatMap (outpath: lib.map (output: outpath.${output}) outpath.outputs) outpaths;
   };
 in
-buildPythonPackage rec {
+buildPythonPackage.override { stdenv = cudaPackages.backendStdenv; } rec {
   pname = "cupy";
   version = "13.6.0";
   pyproject = true;
-
-  stdenv = cudaPackages.backendStdenv;
 
   src = fetchFromGitHub {
     owner = "cupy";
@@ -64,10 +62,14 @@ buildPythonPackage rec {
     fetchSubmodules = true;
   };
 
-  env.LDFLAGS = toString [
-    # Fake libcuda.so (the real one is deployed impurely)
-    "-L${lib.getOutput "stubs" cudaPackages.cuda_cudart}/lib/stubs"
-  ];
+  env = {
+    LDFLAGS = toString [
+      # Fake libcuda.so (the real one is deployed impurely)
+      "-L${lib.getOutput "stubs" cudaPackages.cuda_cudart}/lib/stubs"
+    ];
+    # NVCC = "${lib.getExe cudaPackages.cuda_nvcc}"; # FIXME: splicing/buildPackages
+    CUDA_PATH = "${cudatoolkit-joined}";
+  };
 
   # See https://docs.cupy.dev/en/v10.2.0/reference/environment.html. Setting both
   # CUPY_NUM_BUILD_JOBS and CUPY_NUM_NVCC_THREADS to NIX_BUILD_CORES results in
@@ -97,9 +99,6 @@ buildPythonPackage rec {
     nccl
   ];
 
-  # NVCC = "${lib.getExe cudaPackages.cuda_nvcc}"; # FIXME: splicing/buildPackages
-  CUDA_PATH = "${cudatoolkit-joined}";
-
   dependencies = [
     fastrlock
     numpy
@@ -122,15 +121,15 @@ buildPythonPackage rec {
 
   enableParallelBuilding = true;
 
-  meta = with lib; {
+  meta = {
     description = "NumPy-compatible matrix library accelerated by CUDA";
     homepage = "https://cupy.chainer.org/";
     changelog = "https://github.com/cupy/cupy/releases/tag/${src.tag}";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     platforms = [
       "aarch64-linux"
       "x86_64-linux"
     ];
-    maintainers = with maintainers; [ hyphon81 ];
+    maintainers = [ ];
   };
 }

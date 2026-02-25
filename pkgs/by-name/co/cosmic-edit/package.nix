@@ -16,17 +16,17 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "cosmic-edit";
-  version = "1.0.0-beta.7";
+  version = "1.0.7";
 
   # nixpkgs-update: no auto update
   src = fetchFromGitHub {
     owner = "pop-os";
     repo = "cosmic-edit";
     tag = "epoch-${finalAttrs.version}";
-    hash = "sha256-V3O4ktSJ1cLAgtFvHqzX0AanJdir/HfqdvgCiHINyxg=";
+    hash = "sha256-yaDFlnORaPwh/2Zb3Nh1Hr/jA1Z/kQT6Y1zic0eVvwA=";
   };
 
-  cargoHash = "sha256-ELQrRDTNAX5eWWjsmWfg8BCKnaM+tqncS2O4jA3N9W8=";
+  cargoHash = "sha256-1Q+jdr7uSQTp+3z2fgQIyH33v/Ld9MPER3/WRJ34Mdg=";
 
   postPatch = ''
     substituteInPlace justfile --replace-fail '#!/usr/bin/env' "#!$(command -v env)"
@@ -69,8 +69,6 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
     updateScript = nix-update-script {
       extraArgs = [
-        "--version"
-        "unstable"
         "--version-regex"
         "epoch-(.*)"
       ];

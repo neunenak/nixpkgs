@@ -6,14 +6,14 @@
   stdenv,
 }:
 
-buildGoModule rec {
+buildGoModule (finalAttrs: {
   pname = "kaf";
   version = "0.2.13";
 
   src = fetchFromGitHub {
     owner = "birdayz";
     repo = "kaf";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-tjHRIbTJJ8HPp2Jk7R2rl+ZN+ie6xRlssx4clcGc4U4=";
   };
 
@@ -31,11 +31,11 @@ buildGoModule rec {
       --fish <($out/bin/kaf completion fish)
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Modern CLI for Apache Kafka, written in Go";
     mainProgram = "kaf";
     homepage = "https://github.com/birdayz/kaf";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ zarelit ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ zarelit ];
   };
-}
+})

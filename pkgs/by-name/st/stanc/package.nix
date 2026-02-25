@@ -9,7 +9,6 @@ ocamlPackages.buildDunePackage rec {
   version = "2.37.0";
 
   minimalOCamlVersion = "4.12";
-  duneVersion = "3";
 
   src = fetchFromGitHub {
     owner = "stan-dev";
@@ -26,14 +25,14 @@ ocamlPackages.buildDunePackage rec {
     ppx_deriving
     fmt
     yojson
-    cmdliner
+    cmdliner_1
   ];
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/stan-dev/stanc3";
     description = "Stan compiler and utilities";
-    license = licenses.bsd3;
-    maintainers = with maintainers; [ wegank ];
-    platforms = platforms.unix;
+    license = lib.licenses.bsd3;
+    maintainers = with lib.maintainers; [ wegank ];
+    platforms = lib.platforms.unix;
   };
 }

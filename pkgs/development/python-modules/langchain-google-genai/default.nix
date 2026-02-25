@@ -4,13 +4,13 @@
   fetchFromGitHub,
 
   # build-system
-  pdm-backend,
+  hatchling,
 
   # dependencies
   filetype,
   google-api-core,
   google-auth,
-  google-generativeai,
+  google-genai,
   langchain-core,
   pydantic,
 
@@ -29,19 +29,19 @@
 
 buildPythonPackage rec {
   pname = "langchain-google-genai";
-  version = "3.0.0";
+  version = "4.2.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "langchain-ai";
     repo = "langchain-google";
     tag = "libs/genai/v${version}";
-    hash = "sha256-9Z0iRSICApA5/iHB7NTVYGpkktaoynG74W2mvn9zeMg=";
+    hash = "sha256-1WL5pasYHKzXRbOGo910SP3YP6eg00aFoOd7RTwV++A=";
   };
 
   sourceRoot = "${src.name}/libs/genai";
 
-  build-system = [ pdm-backend ];
+  build-system = [ hatchling ];
 
   pythonRelaxDeps = [
     # Each component release requests the exact latest core.
@@ -53,7 +53,7 @@ buildPythonPackage rec {
     filetype
     google-api-core
     google-auth
-    google-generativeai
+    google-genai
     langchain-core
     pydantic
   ];
@@ -68,7 +68,13 @@ buildPythonPackage rec {
     syrupy
   ];
 
-  pytestFlagsArray = [ "tests/unit_tests" ];
+  enabledTestPaths = [ "tests/unit_tests" ];
+
+  disabledTests = [
+    # Fails when langchain-core gets ahead of this package
+    "test_serdes"
+    "test_serialize"
+  ];
 
   pythonImportsCheck = [ "langchain_google_genai" ];
 

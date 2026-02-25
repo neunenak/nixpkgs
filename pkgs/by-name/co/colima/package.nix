@@ -13,14 +13,14 @@
   colima,
 }:
 
-buildGoModule rec {
+buildGoModule (finalAttrs: {
   pname = "colima";
   version = "0.9.1";
 
   src = fetchFromGitHub {
     owner = "abiosoft";
     repo = "colima";
-    tag = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-oRhpABYyP4T6kfmvJ4llPXcXWrSbxU7uUfvXQhm2huc=";
     # We need the git revision
     leaveDotGit = true;
@@ -53,7 +53,7 @@ buildGoModule rec {
   '';
 
   preConfigure = ''
-    ldflags="-s -w -X github.com/abiosoft/colima/config.appVersion=${version} \
+    ldflags="-s -w -X github.com/abiosoft/colima/config.appVersion=${finalAttrs.version} \
     -X github.com/abiosoft/colima/config.revision=$(cat .git-revision)"
   '';
 
@@ -80,14 +80,14 @@ buildGoModule rec {
     command = "HOME=$(mktemp -d) colima version";
   };
 
-  meta = with lib; {
+  meta = {
     description = "Container runtimes with minimal setup";
     homepage = "https://github.com/abiosoft/colima";
-    license = licenses.mit;
-    maintainers = with maintainers; [
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [
       aaschmid
       tricktron
     ];
     mainProgram = "colima";
   };
-}
+})

@@ -14,16 +14,27 @@
 }:
 let
   pname = "srctools";
-  version = "2.6.1";
+  version = "2.6.2";
 in
 buildPythonPackage {
   inherit pname version;
-  format = "pyproject";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-EPdK8IALfcPhfzHiAR2FC821Z0Igkik9+mpky3eIsoM=";
+    hash = "sha256-c+NmrTntpNTEI782aoC4bNpoKpWe4cqSAkxpYS5HH30=";
   };
+
+  # TODO remove when https://github.com/python/pythoncapi-compat/pull/169 is merged
+  # and new srctools version is released with fix
+  patches = [
+    ./fix-tests.diff
+  ];
+
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail "meson-python == 0.18.0" "meson-python >= 0.18.0"
+  '';
 
   build-system = [
     meson

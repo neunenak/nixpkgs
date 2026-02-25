@@ -91,8 +91,8 @@ rustPlatform.buildRustPackage {
       # No linkcheck in sandbox
       echo 'optional = true' >> book/en/book.toml
       mdbook build book/en
-      mkdir -p $doc/share/doc/$name
-      mv ./book/en/build/html $doc/share/doc/$name
+      mkdir -p $doc/share/doc/$name/html
+      mv ./book/en/build/* $doc/share/doc/$name/html
     ''
     + lib.optionalString installManPages ''
       $out/bin/just --man > ./just.1

@@ -2,7 +2,6 @@
   lib,
   buildPythonPackage,
   fetchFromGitHub,
-  pythonOlder,
 
   # build-system
   hatchling,
@@ -33,14 +32,14 @@
 
 buildPythonPackage rec {
   pname = "instructor";
-  version = "1.11.3";
+  version = "1.14.4";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "jxnl";
     repo = "instructor";
     tag = "v${version}";
-    hash = "sha256-vknPfRHyLoLo2838p/fbjrqyaBORZzLp9+fN98yVDz0=";
+    hash = "sha256-6NYS6nY9phIY9fWEp0X3fC90uFedaot2xzZynzGnZSE=";
   };
 
   build-system = [ hatchling ];
@@ -83,6 +82,7 @@ buildPythonPackage rec {
     "successfully"
     "test_mode_functions_deprecation_warning"
     "test_partial"
+    "test_provider_invalid_type_raises_error"
 
     # Requires unpackaged `vertexai`
     "test_json_preserves_description_of_non_english_characters_in_json_mode"

@@ -14,16 +14,16 @@
 
 buildGoModule (finalAttrs: {
   pname = "openbao";
-  version = "2.4.4";
+  version = "2.5.1";
 
   src = fetchFromGitHub {
     owner = "openbao";
     repo = "openbao";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-V3lYm+FWqy0x7dTIE/Ii6W29BlspwBLlFFVIyohZzE8=";
+    hash = "sha256-pVFsyNg9ccSFAdHb/fjeVoMBh1nKcjwcFfVBBqFalIo=";
   };
 
-  vendorHash = "sha256-JlUvnY5UlIuSxjtejjIcQTwFdQcMJrRWH5qNKIio2Jo=";
+  vendorHash = "sha256-lfabvwO+p54SREvpCZdw5z/QMLDZqaf1UZTXWGm6sdg=";
 
   proxyVendor = true;
 
@@ -57,7 +57,6 @@ buildGoModule (finalAttrs: {
     versionCheckHook
   ];
   versionCheckProgram = "${placeholder "out"}/bin/bao";
-  versionCheckProgramArg = "--version";
   doInstallCheck = true;
 
   passthru = {

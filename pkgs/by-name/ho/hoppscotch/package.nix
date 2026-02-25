@@ -8,22 +8,22 @@
 
 let
   pname = "hoppscotch";
-  version = "25.9.1-0";
+  version = "26.1.1-0";
 
   src =
     fetchurl
       {
         aarch64-darwin = {
           url = "https://github.com/hoppscotch/releases/releases/download/v${version}/Hoppscotch_mac_aarch64.dmg";
-          hash = "sha256-mV/k+9NgHp9fyc8i0trewobvk3Fcu4JnRofHGV7dp70=";
+          hash = "sha256-O+LJFg7js0anQxKzruVuaWO4JE6M70Gcq8TowejWLIc=";
         };
         x86_64-darwin = {
           url = "https://github.com/hoppscotch/releases/releases/download/v${version}/Hoppscotch_mac_x64.dmg";
-          hash = "sha256-5UMZw3n7lINJSWf0SKmux7s8ISKGn+GppXbK1gcbeVs=";
+          hash = "sha256-yF1fyk++CigS/sD2qttM3e2H4Dxq0wXM6be32egl0t0=";
         };
         x86_64-linux = {
           url = "https://github.com/hoppscotch/releases/releases/download/v${version}/Hoppscotch_linux_x64.AppImage";
-          hash = "sha256-aW83wSbIV31sakiZxOaUd2QjxOwK2tcnaEMF9jrvrHg=";
+          hash = "sha256-IoK+bLGox/9To3EzR1pk/ku/e+nm1PDpvz/5b59csu8=";
         };
       }
       .${stdenv.hostPlatform.system} or (throw "Unsupported system: ${stdenv.hostPlatform.system}");

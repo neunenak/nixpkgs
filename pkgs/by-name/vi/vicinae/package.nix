@@ -2,8 +2,10 @@
   abseil-cpp,
   cmake,
   cmark-gfm,
+  coreutils,
   fetchFromGitHub,
   fetchNpmDeps,
+  glaze,
   kdePackages,
   lib,
   libqalculate,
@@ -14,35 +16,37 @@
   pkg-config,
   protobuf,
   qt6,
-  rapidfuzz-cpp,
   stdenv,
   wayland,
+  libxml2,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "vicinae";
-  version = "0.16.10";
+  version = "0.19.9";
 
   src = fetchFromGitHub {
     owner = "vicinaehq";
     repo = "vicinae";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-4t0AscBe+TMhQ5SuzkBSgKrMXGs/2BvlRv8ke3pg+yo=";
+    hash = "sha256-y4Z5QknWJ18jU8BiZlYvmhhSB0h3A2ZL7hMjQdgGdgk=";
   };
 
   apiDeps = fetchNpmDeps {
-    src = "${finalAttrs.src}/typescript/api";
-    hash = "sha256-4OgVCnw5th2TcXszVY5G9ENr3/Y/eR2Kd45DbUhQRNk=";
+    src = "${finalAttrs.src}/src/typescript/api";
+    hash = "sha256-UsTpMR23UQBRseRo33nbT6z/UCjZByryWfn2AQSgm6U=";
   };
 
   extensionManagerDeps = fetchNpmDeps {
-    src = "${finalAttrs.src}/typescript/extension-manager";
-    hash = "sha256-krDFHTG8irgVk4a79LMz148drLgy2oxEoHCKRpur1R4=";
+    src = "${finalAttrs.src}/src/typescript/extension-manager";
+    hash = "sha256-wl8FDFB6Vl1zD0/s2EbU6l1KX4rwUW6dOZof4ebMMO8=";
   };
 
   cmakeFlags = lib.mapAttrsToList lib.cmakeFeature {
     "VICINAE_GIT_TAG" = "v${finalAttrs.version}";
     "VICINAE_PROVENANCE" = "nix";
     "INSTALL_NODE_MODULES" = "OFF";
+    "INSTALL_BROWSER_NATIVE_HOST" = "OFF";
+    "USE_SYSTEM_GLAZE" = "ON";
     "CMAKE_INSTALL_PREFIX" = placeholder "out";
     "CMAKE_INSTALL_DATAROOTDIR" = "share";
     "CMAKE_INSTALL_BINDIR" = "bin";
@@ -63,6 +67,7 @@ stdenv.mkDerivation (finalAttrs: {
   buildInputs = [
     abseil-cpp
     cmark-gfm
+    glaze
     kdePackages.layer-shell-qt
     kdePackages.qtkeychain
     libqalculate
@@ -72,15 +77,15 @@ stdenv.mkDerivation (finalAttrs: {
     qt6.qtbase
     qt6.qtsvg
     qt6.qtwayland
-    rapidfuzz-cpp
     wayland
+    libxml2
   ];
 
   postPatch = ''
     local postPatchHooks=()
     source ${npmHooks.npmConfigHook}/nix-support/setup-hook
-    npmRoot=typescript/api npmDeps=${finalAttrs.apiDeps} npmConfigHook
-    npmRoot=typescript/extension-manager npmDeps=${finalAttrs.extensionManagerDeps} npmConfigHook
+    npmRoot=src/typescript/api npmDeps=${finalAttrs.apiDeps} npmConfigHook
+    npmRoot=src/typescript/extension-manager npmDeps=${finalAttrs.extensionManagerDeps} npmConfigHook
   '';
 
   qtWrapperArgs = [
@@ -92,14 +97,20 @@ stdenv.mkDerivation (finalAttrs: {
     }"
   ];
 
+  postFixup = ''
+    substituteInPlace $out/share/systemd/user/vicinae.service \
+      --replace-fail "/bin/kill" "${lib.getExe' coreutils "kill"}"\
+      --replace-fail "ExecStart=vicinae" "ExecStart=$out/bin/vicinae"
+  '';
+
   passthru.updateScript = ./update.sh;
 
   meta = {
-    description = "A focused launcher for your desktop — native, fast, extensible";
+    description = "Native, fast, extensible launcher for the desktop";
     homepage = "https://github.com/vicinaehq/vicinae";
     license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [
-      dawnofmidnight
+      whispersofthedawn
       zstg
     ];
     platforms = lib.platforms.linux;

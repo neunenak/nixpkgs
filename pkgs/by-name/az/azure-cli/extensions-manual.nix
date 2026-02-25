@@ -196,14 +196,15 @@
 
   connectedk8s = mkAzExtension rec {
     pname = "connectedk8s";
-    version = "1.9.3";
+    version = "1.11.0";
     url = "https://azcliprod.blob.core.windows.net/cli-extensions/connectedk8s-${version}-py2.py3-none-any.whl";
-    hash = "sha256-4OuN92PXzIWgOWhWu/S4ofQ4AbITH6XSG1soUOljY+8=";
+    hash = "sha256-Hl/+mS1Aj5Vsq2VFWrJuYmhXglt/wCr0ld67tK+tMak=";
     description = "Microsoft Azure Command-Line Tools Connectedk8s Extension";
     propagatedBuildInputs = with python3Packages; [
       azure-graphrbac
       azure-mgmt-hybridcompute
       kubernetes
+      oras
       pycryptodome
       pyyaml
     ];
@@ -212,9 +213,9 @@
 
   containerapp = mkAzExtension rec {
     pname = "containerapp";
-    version = "1.3.0b1";
+    version = "1.3.0b2";
     url = "https://azcliprod.blob.core.windows.net/cli-extensions/containerapp-${version}-py2.py3-none-any.whl";
-    hash = "sha256-gEFo2qBqQ19SSIMx1BWPoc19xv7lCUkuZMSUz9qPqrE=";
+    hash = "sha256-Br/cfKFTkqcjGRCXAbHqfwTe4g49F3zbj/tzp/O+giI=";
     description = "Microsoft Azure Command-Line Tools Containerapp Extension";
     propagatedBuildInputs = with python3Packages; [
       docker
@@ -319,9 +320,9 @@
 
   vm-repair = mkAzExtension rec {
     pname = "vm-repair";
-    version = "2.1.2";
+    version = "2.1.3";
     url = "https://azcliprod.blob.core.windows.net/cli-extensions/vm_repair-${version}-py2.py3-none-any.whl";
-    hash = "sha256-DOuH7BG4WrhP7SQH3GInFh7DHT0qN3JhSG76EXmNn24=";
+    hash = "sha256-atqfMIN0FjLZjSIRh+T9MBxt34y6VWpxexCEBFsPTaM=";
     description = "Support for repairing Azure Virtual Machines";
     propagatedBuildInputs = with python3Packages; [ opencensus ];
     meta.maintainers = [ ];
@@ -351,6 +352,7 @@
   deidservice = throw "The 'deidservice' extension for azure-cli was moved under healthcareapis"; # Added 2024-11-19, https://github.com/Azure/azure-cli-extensions/pull/8224
   hdinsightonaks = throw "The 'hdinsightonaks' extension for azure-cli was removed upstream"; # https://github.com/Azure/azure-cli-extensions/pull/8956
   logz = throw "The 'logz' extension for azure-cli was deprecated upstream"; # Added 2024-11-02, https://github.com/Azure/azure-cli-extensions/pull/8459
+  mobile-network = throw "The 'mobile-network' extension for azure-cli was removed upstream"; # https://github.com/Azure/azure-cli-extensions/pull/9453
   pinecone = throw "The 'pinecone' extension for azure-cli was removed upstream"; # Added 2025-06-03, https://github.com/Azure/azure-cli-extensions/pull/8763
   playwright-cli-extension = throw "The 'playwright-cli-extension' extension for azure-cli was removed upstream"; # https://github.com/Azure/azure-cli-extensions/pull/9156
   sap-hana = throw "The 'sap-hana' extension for azure-cli was deprecated upstream"; # Added 2025-07-01, https://github.com/Azure/azure-cli-extensions/pull/8904

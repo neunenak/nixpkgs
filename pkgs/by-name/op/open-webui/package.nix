@@ -9,13 +9,13 @@
 }:
 let
   pname = "open-webui";
-  version = "0.6.40";
+  version = "0.8.5";
 
   src = fetchFromGitHub {
     owner = "open-webui";
     repo = "open-webui";
     tag = "v${version}";
-    hash = "sha256-whQmHSnHWeAozNsWemZZXi3quqcY27PTO6/3lpxiy+c=";
+    hash = "sha256-uK80y3ncHyYGTO2x7HKx19r5/2VW2PnarE4pnxrzleI=";
   };
 
   frontend = buildNpmPackage rec {
@@ -32,7 +32,7 @@ let
       url = "https://github.com/pyodide/pyodide/releases/download/${pyodideVersion}/pyodide-${pyodideVersion}.tar.bz2";
     };
 
-    npmDepsHash = "sha256-WL239S/XB+fZEOY2MQMMxbyJ5RoXfZJz94A8IOmyQ9c=";
+    npmDepsHash = "sha256-Su7WcgvJ5nUW3juTI7kr+l324v+6nWtGMKecY57Xk84=";
 
     # See https://github.com/open-webui/open-webui/issues/15880
     npmFlags = [
@@ -75,8 +75,6 @@ python3Packages.buildPythonApplication rec {
 
   build-system = with python3Packages; [ hatchling ];
 
-  patches = [ ./langchain-v1.patch ];
-
   # Not force-including the frontend build directory as frontend is managed by the `frontend` derivation above.
   postPatch = ''
     substituteInPlace pyproject.toml \
@@ -108,13 +106,13 @@ python3Packages.buildPythonApplication rec {
       beautifulsoup4
       black
       boto3
+      brotli
       chardet
       chromadb
       cryptography
       ddgs
       docx2txt
       einops
-      extract-msg
       fake-useragent
       fastapi
       faster-whisper
@@ -128,11 +126,11 @@ python3Packages.buildPythonApplication rec {
       google-generativeai
       googleapis-common-protos
       httpx
-      iso-639
       itsdangerous
       langchain
       langchain-classic
       langchain-community
+      langchain-text-splitters
       langdetect
       ldap3
       loguru
@@ -157,7 +155,6 @@ python3Packages.buildPythonApplication rec {
       opentelemetry-instrumentation-httpx
       opentelemetry-instrumentation-aiohttp-client
       pandas
-      passlib
       peewee
       peewee-migrate
       pgvector
@@ -173,10 +170,12 @@ python3Packages.buildPythonApplication rec {
       pypdf
       python-dotenv
       python-jose
+      python-mimeparse
       python-multipart
       python-pptx
       python-socketio
       pytube
+      pytz
       pyxlsb
       rank-bm25
       rapidocr-onnxruntime

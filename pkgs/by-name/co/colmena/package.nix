@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
 
   buildInputs = [ nix-eval-jobs ];
 
-  NIX_EVAL_JOBS = "${nix-eval-jobs}/bin/nix-eval-jobs";
+  env.NIX_EVAL_JOBS = "${nix-eval-jobs}/bin/nix-eval-jobs";
 
   patches = [
     # Fixes nix 2.24 compat: https://github.com/zhaofengli/colmena/pull/236
@@ -62,12 +62,12 @@ rustPlatform.buildRustPackage rec {
     tests.version = testers.testVersion { package = colmena; };
   };
 
-  meta = with lib; {
+  meta = {
     description = "Simple, stateless NixOS deployment tool";
     homepage = "https://colmena.cli.rs/${passthru.apiVersion}";
-    license = licenses.mit;
-    maintainers = with maintainers; [ zhaofengli ];
-    platforms = platforms.linux ++ platforms.darwin;
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ zhaofengli ];
+    platforms = lib.platforms.linux ++ lib.platforms.darwin;
     mainProgram = "colmena";
   };
 }

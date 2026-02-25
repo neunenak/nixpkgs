@@ -6,18 +6,18 @@
   nix-update-script,
 }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "typos";
-  version = "1.39.2";
+  version = "1.43.5";
 
   src = fetchFromGitHub {
     owner = "crate-ci";
     repo = "typos";
-    tag = "v${version}";
-    hash = "sha256-N8lz/PEGtqBHH9smUGoPghGEIGukrS/9POv+FAb8L/M=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-lRh7f04DJx3DSmRUA0XpL1aQWrxcqY87yz/9jx512nA=";
   };
 
-  cargoHash = "sha256-+8RKFg8XFYgqso3lvqaKHi8O8dFU3ayEMdLgZytNZlY=";
+  cargoHash = "sha256-mfdKF1Nup/RqANRQzRtezr6iwgMJwqKHSEgeReD3EoY=";
 
   passthru.updateScript = nix-update-script { };
 
@@ -31,19 +31,19 @@ rustPlatform.buildRustPackage rec {
 
   nativeInstallCheckInputs = [ versionCheckHook ];
   doInstallCheck = true;
-  versionCheckProgramArg = "--version";
 
   meta = {
     description = "Source code spell checker";
     mainProgram = "typos";
     homepage = "https://github.com/crate-ci/typos";
-    changelog = "https://github.com/crate-ci/typos/blob/v${version}/CHANGELOG.md";
+    changelog = "https://github.com/crate-ci/typos/blob/v${finalAttrs.version}/CHANGELOG.md";
     license = with lib.licenses; [
       asl20 # or
       mit
     ];
     maintainers = with lib.maintainers; [
       mgttlinger
+      chrjabs
     ];
   };
-}
+})

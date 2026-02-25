@@ -31,7 +31,7 @@ let
 
     inherit (pkgs.formats.yaml { }) type;
   };
-  initrdInterfaceTypes = builtins.map (interface: interface.link.kind) (
+  initrdInterfaceTypes = map (interface: interface.link.kind) (
     builtins.attrValues initrdCfg.settings.interfaces
   );
   # IfState interface kind to kernel modules mapping
@@ -106,7 +106,7 @@ in
       settings = lib.mkOption {
         inherit (settingsFormat) type;
         default = { };
-        description = "Content of IfState's configuration file. See <https://ifstate.net/2.0/schema/> for details.";
+        description = "Content of IfState's configuration file. See <https://ifstate.net/2.2/schema/> for details.";
       };
     };
 
@@ -131,19 +131,27 @@ in
       settings = lib.mkOption {
         inherit (settingsFormat) type;
         default = { };
-        description = "Content of IfState's initrd configuration file. See <https://ifstate.net/2.0/schema/> for details.";
+        description = "Content of IfState's initrd configuration file. See <https://ifstate.net/2.2/schema/> for details.";
       };
 
       cleanupSettings = lib.mkOption {
         inherit (settingsFormat) type;
         # required by json schema
         default.interfaces = { };
-        description = "Content of IfState's initrd cleanup configuration file. See <https://ifstate.net/2.0/schema/> for details. This configuration gets applied before systemd switches to stage two. The goas is to deconfigurate the whole network in order to prevent access to services, before the firewall is configured. The stage two IfState configuration will start after the firewall is configured.";
+        description = "Content of IfState's initrd cleanup configuration file. See <https://ifstate.net/2.0/schema/> for details. This configuration gets applied before systemd switches to stage two. The goal is to deconfigurate the whole network in order to prevent access to services, before the firewall is configured. The stage two IfState configuration will start after the firewall is configured.";
       };
     };
   };
 
   config = lib.mkMerge [
+    (lib.mkIf (cfg.enable || initrdCfg.enable) {
+      # sane defaults to not let IfState work against the kernel
+      boot.extraModprobeConfig = ''
+        options bonding max_bonds=0
+        options dummy numdummies=0
+        options ifb numifbs=0
+      '';
+    })
     (lib.mkIf cfg.enable {
       assertions = [
         {
@@ -157,13 +165,6 @@ in
       ];
 
       networking.useDHCP = lib.mkDefault false;
-
-      # sane defaults to not let IfState work against the kernel
-      boot.extraModprobeConfig = ''
-        options bonding max_bonds=0
-        options dummy numdummies=0
-        options ifb numifbs=0
-      '';
 
       environment = {
         # ifstatecli command should be available to use user, there are other useful subcommands like check or show
@@ -227,7 +228,7 @@ in
               type:
               if builtins.hasAttr type interfaceKernelModules then interfaceKernelModules."${type}" else [ ];
           in
-          lib.flatten (builtins.map enableModule initrdInterfaceTypes);
+          lib.flatten (map enableModule initrdInterfaceTypes);
 
         systemd = {
           storePaths = [

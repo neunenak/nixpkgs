@@ -20,29 +20,31 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "rclone-ui";
-  version = "2.2.0";
+  version = "3.4.2";
 
   src = fetchFromGitHub {
     owner = "rclone-ui";
     repo = "rclone-ui";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-gwZXI501lE3Tm9M8k6a2NJCsvbiPB3Y4yhhr4gkpkY4=";
+    hash = "sha256-aDwtRZGs2JhD2xbzVR3wDdSIjWied9BKknt5WETefvU=";
   };
 
   npmDeps = fetchNpmDeps {
     name = "${finalAttrs.pname}-${finalAttrs.version}-npm-deps";
     inherit (finalAttrs) src;
     forceGitDeps = true;
-    hash = "sha256-OkPVPT4JBbkVcfGtSs6oi+VFA3sxp1b6fVr68ILtnPU=";
+    hash = "sha256-iyO9Eg+rWV3T50uWyrPHjGcvREnMgSyr0Gq8dxOMPWg=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = finalAttrs.cargoRoot;
 
-  cargoHash = "sha256-8RK1rrGyxRNCTARlYUJNXWaH9F/3hV31uyNXjvWJaFU=";
+  cargoHash = "sha256-sCsH+jjHMR3zsPoFfDq2vVuTc8PvYuR/3ZY5bcW7X0o=";
 
   # Disable tauri bundle updater, can be removed when #389107 is merged
   patches = [ ./remove_updater.patch ];
+  # Remove duplicate tao-macros dependency causing fetchCargoVendor failure.
+  cargoPatches = [ ./remove_duplicate_dependency.patch ];
 
   postPatch = ''
     substituteInPlace src-tauri/tauri.conf.json \

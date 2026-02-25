@@ -8,9 +8,11 @@
   nodejs,
   electron,
   python3,
-  xorg,
+  libx11,
+  xorgproto,
+  libxkbfile,
   fontconfig,
-  nodePackages,
+  node-gyp-build,
   ripgrep,
   pkg-config,
   libsecret,
@@ -49,7 +51,7 @@ stdenv.mkDerivation (finalAttrs: {
     (python3.withPackages (ps: with ps; [ packaging ]))
     pkg-config
     nodejs
-    nodePackages.node-gyp-build
+    node-gyp-build
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [
     xcbuild
@@ -58,10 +60,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   buildInputs = [
     libsecret
-    xorg.libX11
-    xorg.libxkbfile
+    libx11
+    libxkbfile
     fontconfig
-    xorg.xorgproto
+    xorgproto
   ];
 
   postPatch = ''

@@ -15,14 +15,14 @@
 
 buildPythonPackage rec {
   pname = "pysmlight";
-  version = "0.2.11";
+  version = "0.2.14";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "smlight-tech";
     repo = "pysmlight";
     tag = "v${version}";
-    hash = "sha256-+ApqlqrNGQJ52VJPaaWCddsQGMu7W2fLJLKxV69zJKI=";
+    hash = "sha256-SFWeWIzMTKCXQ1GPBLJrP1xJaKaZr7UKRkfmIcePYPY=";
   };
 
   build-system = [

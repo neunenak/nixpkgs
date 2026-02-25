@@ -15,17 +15,17 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "cosmic-store";
-  version = "1.0.0-beta.7";
+  version = "1.0.7";
 
   # nixpkgs-update: no auto update
   src = fetchFromGitHub {
     owner = "pop-os";
     repo = "cosmic-store";
     tag = "epoch-${finalAttrs.version}";
-    hash = "sha256-6Qn9+kwuiArxTHpN410gy+7bKXBwv87OPPDMatAYr38=";
+    hash = "sha256-nFquLO/qMANbQRbOfjegZeMb2vCSKUK5/Y/U4ghuW64=";
   };
 
-  cargoHash = "sha256-nJLowAuWvj5JfmPyExQyfCJ9pqNJ0OdzPPku9z7RDWc=";
+  cargoHash = "sha256-rrIIQ5bx4HMrxoUDH63qFJN7J+eyohSSewFZB5xMNjs=";
 
   nativeBuildInputs = [
     just
@@ -60,10 +60,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
         cosmic-autologin-noxwayland
         ;
     };
+
     updateScript = nix-update-script {
       extraArgs = [
-        "--version"
-        "unstable"
         "--version-regex"
         "epoch-(.*)"
       ];

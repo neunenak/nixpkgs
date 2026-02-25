@@ -6,15 +6,15 @@
   installShellFiles,
 }:
 
-buildGoModule rec {
+buildGoModule (finalAttrs: {
   pname = "melange";
-  version = "0.33.0";
+  version = "0.41.1";
 
   src = fetchFromGitHub {
     owner = "chainguard-dev";
     repo = "melange";
-    rev = "v${version}";
-    hash = "sha256-0wSOk+e0RWBB/R8Pxl4Op1Ej+eA5djhmijDxEBRN7o4=";
+    rev = "v${finalAttrs.version}";
+    hash = "sha256-qbbt5TDqyWqf0/TZfFJ9Nf1hmOq8Jh4husJpVEJy1o0=";
     # populate values that require us to use git. By doing this in postFetch we
     # can delete .git afterwards and maintain better reproducibility of the src.
     leaveDotGit = true;
@@ -27,7 +27,7 @@ buildGoModule rec {
     '';
   };
 
-  vendorHash = "sha256-ErgX9umuYp83tGYKKDuWMG0ZOP1BcNBueP98IpxOZII=";
+  vendorHash = "sha256-SfYzWPe6TaGrBhnnO9sFPhCsFwSCcr1TflDZD7ZNVL8=";
 
   subPackages = [ "." ];
 
@@ -36,7 +36,7 @@ buildGoModule rec {
   ldflags = [
     "-s"
     "-w"
-    "-X sigs.k8s.io/release-utils/version.gitVersion=v${version}"
+    "-X sigs.k8s.io/release-utils/version.gitVersion=v${finalAttrs.version}"
     "-X sigs.k8s.io/release-utils/version.gitTreeState=clean"
   ];
 
@@ -59,17 +59,17 @@ buildGoModule rec {
     runHook preInstallCheck
 
     $out/bin/melange --help
-    $out/bin/melange version 2>&1 | grep "v${version}"
+    $out/bin/melange version 2>&1 | grep "v${finalAttrs.version}"
 
     runHook postInstallCheck
   '';
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/chainguard-dev/melange";
-    changelog = "https://github.com/chainguard-dev/melange/blob/${src.rev}/NEWS.md";
+    changelog = "https://github.com/chainguard-dev/melange/blob/${finalAttrs.src.rev}/NEWS.md";
     description = "Build APKs from source code";
     mainProgram = "melange";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ developer-guy ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ developer-guy ];
   };
-}
+})

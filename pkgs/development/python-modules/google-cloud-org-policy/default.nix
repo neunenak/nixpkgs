@@ -10,15 +10,15 @@
   setuptools,
 }:
 
-buildPythonPackage rec {
+buildPythonPackage (finalAttrs: {
   pname = "google-cloud-org-policy";
-  version = "1.15.0";
+  version = "1.16.1";
   pyproject = true;
 
   src = fetchPypi {
     pname = "google_cloud_org_policy";
-    inherit version;
-    hash = "sha256-Jx0WoQ51NH6s5g0CzeMisrG2E7zJmRcQng6/KkECJTo=";
+    inherit (finalAttrs) version;
+    hash = "sha256-KleKj6JhG4pi/XAM82C/VndJED2nvK1+NzvT1lm7zpE=";
   };
 
   build-system = [ setuptools ];
@@ -42,11 +42,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "google.cloud.orgpolicy" ];
 
-  meta = with lib; {
-    description = "Protobufs for Google Cloud Organization Policy";
-    homepage = "https://github.com/googleapis/python-org-policy";
-    changelog = "https://github.com/googleapis/python-org-policy/blob/v${version}/CHANGELOG.md";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ austinbutler ];
+  meta = {
+    description = "Python Client for Organization Policy";
+    homepage = "https://github.com/googleapis/google-cloud-python/blob/main/packages/${finalAttrs.pname}";
+    changelog = "https://github.com/googleapis/google-cloud-python/blob/${finalAttrs.pname}-v${finalAttrs.version}/packages/${finalAttrs.pname}/CHANGELOG.md";
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ austinbutler ];
   };
-}
+})

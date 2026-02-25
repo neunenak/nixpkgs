@@ -8,7 +8,12 @@
   makeDesktopItem,
   nss,
   cairo,
-  xorg,
+  libxrandr,
+  libxfixes,
+  libxdamage,
+  libxcursor,
+  libxcomposite,
+  libx11,
   libxkbcommon,
   alsa-lib,
   at-spi2-core,
@@ -20,13 +25,18 @@
   libGL,
   libglvnd,
   systemd,
-  nix-update-script,
+  patchelf,
   undmg,
   makeWrapper,
 }:
 let
   pname = "nextcloud-talk-desktop";
-  version = "2.0.3";
+  version = "2.0.6"; # Ensure both hashes (Linux and Darwin) are updated!
+
+  hashes = {
+    linux = "sha256-eEYNfVnM+qCYnirHdBG6oqBQzDio39J7tmh4BSTAF9g=";
+    darwin = "sha256-2A4Jjz0XoXxTdKq6xP0xhlBneysAkBHMbqfgaftJGFQ=";
+  };
 
   # Only x86_64-linux is supported with Darwin support being universal
   sources = {
@@ -34,13 +44,18 @@ let
     # See https://github.com/nextcloud/talk-desktop?tab=readme-ov-file#%EF%B8%8F-prerequisites
     linux = fetchzip {
       url = "https://github.com/nextcloud-releases/talk-desktop/releases/download/v${version}/Nextcloud.Talk-linux-x64.zip";
-      hash = "sha256-QKbg5vHLuxLpngrHom/odWw9RK43jhZsEg7Df5c7db0=";
+      hash = hashes.linux;
       stripRoot = false;
     };
     darwin = fetchurl {
       url = "https://github.com/nextcloud-releases/talk-desktop/releases/download/v${version}/Nextcloud.Talk-macos-universal.dmg";
-      hash = "sha256-FgiUb2MNEqmbK4BphHQ7M2IeN7Vg1NQ9FR9UO4AfvNs=";
+      hash = hashes.darwin;
     };
+  };
+
+  passthru = {
+    inherit hashes; # needed by updateScript
+    updateScript = ./update.py;
   };
 
   meta = {
@@ -54,7 +69,7 @@ let
   };
 
   linux = stdenv.mkDerivation (finalAttrs: {
-    inherit pname version;
+    inherit pname version passthru;
 
     src = sources.linux;
 
@@ -81,15 +96,13 @@ let
       libgbm
       libGL
       libglvnd
-    ]
-    ++ (with xorg; [
-      libX11
-      libXcomposite
-      libXdamage
-      libXrandr
-      libXfixes
-      libXcursor
-    ]);
+      libx11
+      libxcomposite
+      libxdamage
+      libxrandr
+      libxfixes
+      libxcursor
+    ];
 
     # Required to launch the application and proceed past the zygote_linux fork() process
     # Fixes `Zygote could not fork`
@@ -125,7 +138,10 @@ let
       runHook postInstall
     '';
 
-    passthru.updateScript = nix-update-script { };
+    postFixup = ''
+      ${lib.getExe patchelf} --add-needed libGL.so.1 --add-needed libEGL.so.1 \
+        "$out/opt/Nextcloud Talk-linux-x64/Nextcloud Talk"
+    '';
 
     meta = meta // {
       platforms = lib.intersectLists lib.platforms.linux lib.platforms.x86_64;
@@ -133,7 +149,7 @@ let
   });
 
   darwin = stdenv.mkDerivation (finalAttrs: {
-    inherit pname version;
+    inherit pname version passthru;
 
     src = sources.darwin;
 

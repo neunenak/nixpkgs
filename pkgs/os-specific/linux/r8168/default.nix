@@ -11,7 +11,8 @@ let
 
 in
 stdenv.mkDerivation rec {
-  name = "r8168-${kernel.version}-${version}";
+  name = "${pname}-${version}-${kernel.version}";
+  pname = "r8168";
   # on update please verify that the source matches the realtek version
   version = "8.055.00";
 
@@ -52,15 +53,15 @@ stdenv.mkDerivation rec {
     find ${modDestDir} -name '*.ko' -exec xz -f '{}' \;
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Realtek r8168 driver";
     longDescription = ''
       A kernel module for Realtek 8168 network cards.
       If you want to use this driver, you might need to blacklist the r8169 driver
       by adding "r8169" to boot.blacklistedKernelModules.
     '';
-    license = licenses.gpl2Plus;
-    platforms = platforms.linux;
+    license = lib.licenses.gpl2Plus;
+    platforms = lib.platforms.linux;
     maintainers = [ ];
     broken = lib.versionAtLeast kernel.modDirVersion "6.13";
   };

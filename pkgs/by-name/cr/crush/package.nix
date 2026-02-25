@@ -9,16 +9,16 @@
 
 buildGoModule (finalAttrs: {
   pname = "crush";
-  version = "0.18.6";
+  version = "0.43.2";
 
   src = fetchFromGitHub {
     owner = "charmbracelet";
     repo = "crush";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-J6C/aV+VOAZXDC5dTZl7CkLvxk8IOjbWfJkHEJj29Dg=";
+    hash = "sha256-VyV57ASsn2t1zaW7L6o7sVc+H+tHf4AP1HaKgrdXrtk=";
   };
 
-  vendorHash = "sha256-LhmkdwBRO0pW2mk7fB/rZMxZe6M0TEfReHJ+NxAPHR0=";
+  vendorHash = "sha256-qFqFyPdAqh2BXeE2tkLmn88Z8qHFeSlTA2Ols8H7iaQ=";
 
   ldflags = [
     "-s"
@@ -42,7 +42,6 @@ buildGoModule (finalAttrs: {
   nativeCheckInputs = [ writableTmpDirAsHomeHook ];
 
   nativeInstallCheckInputs = [ versionCheckHook ];
-  versionCheckProgramArg = "--version";
   doInstallCheck = true;
 
   updateScript = nix-update-script { };
@@ -52,7 +51,11 @@ buildGoModule (finalAttrs: {
     homepage = "https://github.com/charmbracelet/crush";
     changelog = "https://github.com/charmbracelet/crush/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.fsl11Mit;
-    maintainers = with lib.maintainers; [ x123 ];
+    maintainers = with lib.maintainers; [
+      x123
+      malik
+      davinci42
+    ];
     mainProgram = "crush";
   };
 })

@@ -3,47 +3,68 @@
   stdenv,
   rustPlatform,
   fetchFromGitHub,
+  fetchPnpmDeps,
 
-  pnpm_9,
   nodejs,
-  cargo-tauri_1,
+  pnpm_10,
+  pnpmConfigHook,
+  cargo-tauri,
+  jq,
+  moreutils,
   pkg-config,
   wrapGAppsHook3,
   makeBinaryWrapper,
 
   openssl,
-  libsoup_2_4,
-  # webkitgtk_4_0,
+  webkitgtk_4_1,
   gst_all_1,
+
+  nix-update-script,
 }:
 
-rustPlatform.buildRustPackage rec {
+let
+  pnpm = pnpm_10;
+in
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "en-croissant";
-  version = "0.11.1";
+  version = "0.14.1";
 
   src = fetchFromGitHub {
     owner = "franciscoBSalgueiro";
     repo = "en-croissant";
-    tag = "v${version}";
-    hash = "sha256-EiGML3oFCJR4TZkd+FekUrJwCYe/nGdWD9mAtKKtITQ=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-S1ObsGpLxNzr0+bFEuPAe3PCHQc1k0QavgKD6YDffIc=";
   };
 
-  pnpmDeps = pnpm_9.fetchDeps {
-    inherit pname version src;
-    fetcherVersion = 1;
-    hash = "sha256-hvWXSegUWJvwCU5NLb2vqnl+FIWpCLxw96s9NUIgJTI=";
+  pnpmDeps = fetchPnpmDeps {
+    inherit (finalAttrs)
+      pname
+      version
+      src
+      ;
+    inherit pnpm;
+    fetcherVersion = 3;
+    hash = "sha256-hkI1TQeOHKQdsnq1pYIeeU+GYFMIxbyNoZY5Wuxj4UU=";
   };
+
+  postPatch = ''
+    jq '.plugins.updater.endpoints = [ ] | .bundle.createUpdaterArtifacts = false' src-tauri/tauri.conf.json | sponge src-tauri/tauri.conf.json
+  '';
 
   cargoRoot = "src-tauri";
 
-  cargoHash = "sha256-6cBGOdJ7jz+mOl2EEXxoLNeX9meW+ybQxAxnnHAplIc=";
+  cargoHash = "sha256-trQzf5x/sIxkEYQOQKAq1y2GrT3VoQ/ZWCFncb2dNvs=";
 
-  buildAndTestSubdir = cargoRoot;
+  buildAndTestSubdir = finalAttrs.cargoRoot;
 
   nativeBuildInputs = [
-    pnpm_9.configHook
     nodejs
-    cargo-tauri_1.hook
+    pnpm
+    pnpmConfigHook
+
+    cargo-tauri.hook
+    jq
+    moreutils
     pkg-config
   ]
   ++ lib.optionals stdenv.hostPlatform.isLinux [ wrapGAppsHook3 ]
@@ -51,12 +72,12 @@ rustPlatform.buildRustPackage rec {
 
   buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
     openssl
-    libsoup_2_4
-    # webkitgtk_4_0
+    webkitgtk_4_1
+
     gst_all_1.gstreamer
     gst_all_1.gst-plugins-base
-    gst_all_1.gst-plugins-bad
     gst_all_1.gst-plugins-good
+    gst_all_1.gst-plugins-bad
   ];
 
   doCheck = false; # many scoring tests fail
@@ -65,14 +86,17 @@ rustPlatform.buildRustPackage rec {
     makeWrapper "$out"/Applications/en-croissant.app/Contents/MacOS/en-croissant $out/bin/en-croissant
   '';
 
+  passthru.updateScript = nix-update-script { };
+
   meta = {
-    # webkitgtk_4_0 was removed
-    broken = true;
     description = "Ultimate Chess Toolkit";
     homepage = "https://github.com/franciscoBSalgueiro/en-croissant/";
     license = lib.licenses.gpl3Only;
     mainProgram = "en-croissant";
-    maintainers = with lib.maintainers; [ tomasajt ];
+    maintainers = with lib.maintainers; [
+      tomasajt
+      snu
+    ];
     platforms = lib.platforms.linux ++ lib.platforms.darwin;
   };
-}
+})

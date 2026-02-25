@@ -18,7 +18,7 @@
   xxHash,
   ffmpeg_6,
   protobuf,
-  openalSoft,
+  openal-soft,
   minizip,
   range-v3,
   tl-expected,
@@ -42,14 +42,14 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "telegram-desktop-unwrapped";
-  version = "6.3.1";
+  version = "6.5.1";
 
   src = fetchFromGitHub {
     owner = "telegramdesktop";
     repo = "tdesktop";
     rev = "v${finalAttrs.version}";
     fetchSubmodules = true;
-    hash = "sha256-kIiOHXFOjHCE3GaizNvpu8rUCuJKBN5Oi7p0NvHYy04=";
+    hash = "sha256-y2sf2wDJ6dYxRdDLKIr78z9tPBIoh2WICg4zJBmb85Q=";
   };
 
   nativeBuildInputs = [
@@ -70,7 +70,7 @@ stdenv.mkDerivation (finalAttrs: {
     lz4
     xxHash
     ffmpeg_6
-    openalSoft
+    openal-soft
     minizip
     range-v3
     tl-expected

@@ -2,13 +2,14 @@
   stdenv,
   fetchFromGitHub,
   lib,
+  nix-update-script,
   makeWrapper,
   glib,
   gtk2,
   gtk3,
   ant,
   jdk,
-  libXtst,
+  libxtst,
   coreutils,
   gnugrep,
   zulu,
@@ -69,19 +70,21 @@ stdenv.mkDerivation (finalAttrs: {
         lib.makeLibraryPath [
           glib
           gtk'
-          libXtst
+          libxtst
         ]
       }
 
     runHook postInstall
   '';
 
-  meta = with lib; {
+  passthru.updateScript = nix-update-script { };
+
+  meta = {
     description = "Java application which presents a Microsoft Exchange server as local CALDAV, IMAP and SMTP servers";
     homepage = "https://davmail.sourceforge.net/";
-    license = licenses.gpl2Plus;
-    maintainers = with maintainers; [ peterhoeg ];
-    platforms = platforms.all;
+    license = lib.licenses.gpl2Plus;
+    maintainers = with lib.maintainers; [ peterhoeg ];
+    platforms = lib.platforms.all;
     mainProgram = "davmail";
   };
 })

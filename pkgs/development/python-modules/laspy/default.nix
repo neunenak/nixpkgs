@@ -7,19 +7,16 @@
   lazrs,
   setuptools,
   pytestCheckHook,
-  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "laspy";
-  version = "2.6.1";
-  format = "pyproject";
-
-  disabled = pythonOlder "3.7";
+  version = "2.7.0";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-zpy5oYUosqK5hVg99ApN6mjN2nmV5H5LALbUjfDojao=";
+    hash = "sha256-9W/rVEXnXW/xLugUqrajUzkpDnUmT/J3xr9VPzAlo/U=";
   };
 
   nativeBuildInputs = [ setuptools ];
@@ -40,13 +37,13 @@ buildPythonPackage rec {
     "lazrs"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Interface for reading/modifying/creating .LAS LIDAR files";
     mainProgram = "laspy";
     homepage = "https://github.com/laspy/laspy";
     changelog = "https://github.com/laspy/laspy/blob/${version}/CHANGELOG.md";
-    license = licenses.bsd2;
-    maintainers = with maintainers; [ matthewcroughan ];
-    teams = [ teams.geospatial ];
+    license = lib.licenses.bsd2;
+    maintainers = with lib.maintainers; [ matthewcroughan ];
+    teams = [ lib.teams.geospatial ];
   };
 }

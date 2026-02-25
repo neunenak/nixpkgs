@@ -18,14 +18,14 @@
   hexdump,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "gridcoin-research";
   version = "5.4.9.0";
 
   src = fetchFromGitHub {
     owner = "gridcoin-community";
     repo = "Gridcoin-Research";
-    rev = "${version}";
+    rev = "${finalAttrs.version}";
     hash = "sha256-nupZB4nNbitpf5EBCNy0e+ovjayAszup/r7qxbxA5jI=";
   };
 
@@ -58,7 +58,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  meta = with lib; {
+  meta = {
     description = "POS-based cryptocurrency that rewards users for participating on the BOINC network";
     longDescription = ''
       A POS-based cryptocurrency that rewards users for participating on the BOINC network,
@@ -66,8 +66,8 @@ stdenv.mkDerivation rec {
       issuing money and contributing to scientific research are carried out collectively by the network
     '';
     homepage = "https://gridcoin.us/";
-    license = licenses.mit;
-    maintainers = with maintainers; [ gigglesquid ];
-    platforms = platforms.linux;
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ gigglesquid ];
+    platforms = lib.platforms.linux;
   };
-}
+})

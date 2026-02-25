@@ -1,9 +1,11 @@
 {
   fetchFromGitHub,
-  nodePackages,
+  node-gyp-build,
   makeBinaryWrapper,
   nodejs,
   pnpm_10,
+  fetchPnpmDeps,
+  pnpmConfigHook,
   python3,
   stdenv,
   unixtools,
@@ -29,34 +31,36 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "homepage-dashboard";
-  version = "1.7.0";
+  version = "1.10.1";
 
   src = fetchFromGitHub {
     owner = "gethomepage";
     repo = "homepage";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-03am9z381UozNsmWZefopMp8/tLycXJyiZ5BUGaV1kY=";
+    hash = "sha256-hJbF6VZRgC2oROdEonlWS6Oj229sKemnpQX+pf8+6rc=";
   };
 
-  pnpmDeps = pnpm_10.fetchDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs)
       pname
       version
       src
       ;
-    fetcherVersion = 1;
-    hash = "sha256-svkqmRFwZpcExFWtAbLL0lpHhzsI2s7RiLfQajIqjck=";
+    pnpm = pnpm_10;
+    fetcherVersion = 3;
+    hash = "sha256-YM1v2hkVsxS3AiQbLIHQ5yOkgqQoa+X9rR2yEJYRO/g=";
   };
 
   nativeBuildInputs = [
     makeBinaryWrapper
     nodejs
-    pnpm_10.configHook
+    pnpmConfigHook
+    pnpm_10
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [ cctools ];
 
   buildInputs = [
-    nodePackages.node-gyp-build
+    node-gyp-build
   ];
 
   env.PYTHON = "${python3}/bin/python";

@@ -7,7 +7,8 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "liquidtux-${version}-${kernel.version}";
+  name = "${pname}-${version}-${kernel.version}";
+  pname = "liquidtux";
   version = "0.1.0-unstable-2025-01-16";
 
   src = fetchFromGitHub {
@@ -32,15 +33,15 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Linux kernel hwmon drivers for AIO liquid coolers and other devices";
     homepage = "https://github.com/liquidctl/liquidtux";
-    license = licenses.gpl2Only;
+    license = lib.licenses.gpl2Only;
     platforms = [
       "x86_64-linux"
       "i686-linux"
     ];
-    maintainers = with maintainers; [ nickhu ];
+    maintainers = with lib.maintainers; [ nickhu ];
     broken = lib.versionOlder kernel.version "5.10";
   };
 }

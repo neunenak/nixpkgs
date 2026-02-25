@@ -41,10 +41,10 @@
   libsysprof-capture,
   libthai,
   libwebp,
-  libXdmcp,
+  libxdmcp,
   libxkbcommon,
   libxml2,
-  libXtst,
+  libxtst,
   llvmPackages,
   openexr,
   openjpeg,
@@ -82,13 +82,13 @@ let
 in
 stdenv.mkDerivation {
   pname = "ansel";
-  version = "0-unstable-2025-11-02";
+  version = "0-unstable-2026-02-16";
 
   src = fetchFromGitHub {
     owner = "aurelienpierreeng";
     repo = "ansel";
-    rev = "3b86745c11db83d58b949e7ae4b899826631ee1a";
-    hash = "sha256-aSQE9vT4ZN0VCEbwXK0/W8xwXpIgbiA5dU4FG5eajv8=";
+    rev = "e6cc53c5631060f50f3af6525dfc9d0336dd4275";
+    hash = "sha256-uSEttpEosEUXKeG7abAl4VSa8erp8d+A7QwFG2Tmz+U=";
     fetchSubmodules = true;
   };
 
@@ -149,10 +149,10 @@ stdenv.mkDerivation {
     libsysprof-capture
     libthai
     libwebp
-    libXdmcp
+    libxdmcp
     libxkbcommon
     libxml2
-    libXtst
+    libxtst
     openexr
     openjpeg
     osm-gps-map

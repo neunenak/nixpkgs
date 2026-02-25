@@ -19,7 +19,7 @@
   libxkbcommon,
   wayland,
   libglvnd,
-  xorg,
+  libxcb,
   stdenv,
   makeFontsConf,
   vulkan-loader,
@@ -35,8 +35,8 @@
   makeBinaryWrapper,
   nodejs,
   libGL,
-  libX11,
-  libXext,
+  libx11,
+  libxext,
   livekit-libwebrtc,
   testers,
   writableTmpDirAsHomeHook,
@@ -49,6 +49,7 @@
 assert withGLES -> stdenv.hostPlatform.isLinux;
 
 let
+  channel = "stable";
   executableName = "zeditor";
   # Based on vscode.fhs
   # Zed allows for users to download and use extensions
@@ -77,6 +78,11 @@ let
         ])
         ++ additionalPkgs pkgs;
 
+      extraBwrapArgs = [
+        "--bind-try /etc/nixos/ /etc/nixos/"
+        "--ro-bind-try /etc/xdg/ /etc/xdg/"
+      ];
+
       # symlink shared assets, including icons and desktop entries
       extraInstallCommands = ''
         ln -s "${zed-editor}/share" "$out/"
@@ -101,7 +107,7 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "zed-editor";
-  version = "0.213.8";
+  version = "0.224.11";
 
   outputs = [
     "out"
@@ -114,7 +120,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "zed-industries";
     repo = "zed";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-OB1ZKZRviX2hQL4r8Ve/8OkmeocX/xRs9TLkUn9nGbw=";
+    hash = "sha256-VOPAypHlcr7nY3/wk4ec/Ltv+DUf/v4rHDa5oCsg0aE=";
   };
 
   postPatch = ''
@@ -134,7 +140,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     rm -r $out/git/*/candle-book/
   '';
 
-  cargoHash = "sha256-fPeG+OQOjoXrlod5oatK7o+2aWizi3jagJ3nuCHuT8I=";
+  cargoHash = "sha256-V61uZEl6LG/xckOajcWugf/K+mJR8Bn9WjqxvvwBbfw=";
 
   nativeBuildInputs = [
     cmake
@@ -165,11 +171,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
     alsa-lib
     libxkbcommon
     wayland
-    xorg.libxcb
+    libxcb
     # required by livekit:
     libGL
-    libX11
-    libXext
+    libx11
+    libxext
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [
     apple-sdk_15
@@ -188,6 +194,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
   # proprietary Metal shader compiler.
   buildFeatures = lib.optionals stdenv.hostPlatform.isDarwin [ "gpui/runtime_shaders" ];
 
+  # Some crates define extra types or enum values in test configuration which then lead
+  # to type checking errors in other crates unless this feature is enabled.
+  # gpui/runtime_shaders is required on darwin for the same reason as buildFeatures above:
+  # without it, build.rs invokes the proprietary Metal shader compiler.
+  checkFeatures = [
+    "visual-tests"
+  ]
+  ++ finalAttrs.buildFeatures;
+
   env = {
     ALLOW_MISSING_LICENSES = true;
     ZSTD_SYS_USE_PKG_CONFIG = true;
@@ -203,9 +218,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # Used by `zed --version`
     RELEASE_VERSION = finalAttrs.version;
     LK_CUSTOM_WEBRTC = livekit-libwebrtc;
+    RUSTFLAGS = lib.optionalString withGLES "--cfg gles";
   };
-
-  RUSTFLAGS = lib.optionalString withGLES "--cfg gles";
 
   preBuild = ''
     bash script/generate-licenses
@@ -221,24 +235,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     writableTmpDirAsHomeHook
   ];
 
-  checkFlags = [
-    # Flaky: unreliably fails on certain hosts (including Hydra)
-    "--skip=zed::tests::test_window_edit_state_restoring_enabled"
-    # The following tests are flaky on at least x86_64-linux and aarch64-darwin,
-    # where they sometimes fail with: "database table is locked: workspaces".
-    "--skip=zed::tests::test_open_file_in_many_spaces"
-    "--skip=zed::tests::test_open_non_existing_file"
-  ]
-  ++ lib.optionals stdenv.hostPlatform.isDarwin [
-    # Flaky: unreliably fails on certain hosts (including Hydra)
-    "--skip=zed::open_listener::tests::test_open_workspace_with_directory"
-    "--skip=zed::open_listener::tests::test_open_workspace_with_nonexistent_files"
-  ]
-  ++ lib.optionals stdenv.hostPlatform.isLinux [
-    # Fails on certain hosts (including Hydra) for unclear reason
-    "--skip=test_open_paths_action"
-  ];
+  useNextest = true;
 
+  remoteServerExecutableName = "zed-remote-server-${channel}-${finalAttrs.version}+${channel}";
   installPhase = ''
     runHook preInstall
 
@@ -296,7 +295,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     )
   ''
   + lib.optionalString buildRemoteServer ''
-    install -Dm755 $release_target/remote_server $remote_server/bin/zed-remote-server-stable-$version
+    install -Dm755 $release_target/remote_server $remote_server/bin/${finalAttrs.remoteServerExecutableName}
   ''
   + ''
     runHook postInstall
@@ -306,14 +305,13 @@ rustPlatform.buildRustPackage (finalAttrs: {
     versionCheckHook
   ];
   versionCheckProgram = "${placeholder "out"}/bin/zeditor";
-  versionCheckProgramArg = "--version";
   doInstallCheck = true;
 
   passthru = {
     updateScript = nix-update-script {
       extraArgs = [
         "--version-regex"
-        "^v(?!.*(?:-pre|0\.999999\.0|0\.9999-temporary)$)(.+)$"
+        "^v(?!.*(?:-pre|0\\.999999\\.0|0\\.9999-temporary)$)(.+)$"
 
         # use github releases instead of git tags
         # zed sometimes moves git tags, making them unreliable
@@ -331,7 +329,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     tests = {
       remoteServerVersion = testers.testVersion {
         package = finalAttrs.finalPackage.remote_server;
-        command = "zed-remote-server-stable-${finalAttrs.version} version";
+        command = "${finalAttrs.remoteServerExecutableName} version";
       };
     }
     // lib.optionalAttrs stdenv.hostPlatform.isLinux {

@@ -14,21 +14,22 @@
   installShellFiles,
   nixosTests,
   nix-update-script,
+  versionCheckHook,
 }:
 
 let
   python = python3;
 in
-python.pkgs.buildPythonApplication rec {
+python.pkgs.buildPythonApplication (finalAttrs: {
   pname = "borgbackup";
-  version = "1.4.2";
+  version = "1.4.3";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "borgbackup";
     repo = "borg";
-    tag = version;
-    hash = "sha256-KoOulgOkMgnkN3I0Gw9z0YKZvqvPJ0A9sIAxRLOlchU=";
+    tag = finalAttrs.version;
+    hash = "sha256-v42Mv2wz34w2VYu2mPT/K7VtGSYsUDr+NUM99AzpSB0=";
   };
 
   postPatch = ''
@@ -99,6 +100,7 @@ python.pkgs.buildPythonApplication rec {
     pytest-benchmark
     pytest-xdist
     pytestCheckHook
+    versionCheckHook
   ];
 
   pytestFlags = [
@@ -142,8 +144,6 @@ python.pkgs.buildPythonApplication rec {
     "man"
   ];
 
-  disabled = python.pythonOlder "3.9";
-
   passthru.updateScript = nix-update-script {
     # Only match tags formatted as x.y.z (e.g., 1.2.3)
     extraArgs = [
@@ -152,16 +152,15 @@ python.pkgs.buildPythonApplication rec {
     ];
   };
 
-  meta = with lib; {
-    changelog = "https://github.com/borgbackup/borg/blob/${src.rev}/docs/changes.rst";
+  meta = {
+    changelog = "https://github.com/borgbackup/borg/blob/${finalAttrs.src.rev}/docs/changes.rst";
     description = "Deduplicating archiver with compression and encryption";
     homepage = "https://www.borgbackup.org";
-    license = licenses.bsd3;
-    platforms = platforms.unix; # Darwin and FreeBSD mentioned on homepage
+    license = lib.licenses.bsd3;
+    platforms = lib.platforms.unix; # Darwin and FreeBSD mentioned on homepage
     mainProgram = "borg";
-    maintainers = with maintainers; [
+    maintainers = with lib.maintainers; [
       dotlambda
-      globin
     ];
   };
-}
+})

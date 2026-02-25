@@ -2,28 +2,28 @@
   lib,
   buildPythonPackage,
   fetchFromGitHub,
-  setuptools-scm,
+  hatchling,
+  hatch-vcs,
   html5tagger,
-  setuptools,
   python,
-  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "tracerite";
-  version = "1.1.3";
-  format = "setuptools";
-
-  disabled = pythonOlder "3.7";
+  version = "2.3.1";
+  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "sanic-org";
     repo = "tracerite";
     tag = "v${version}";
-    hash = "sha256-T210vRXFWlTs5ke13DVvZEVsonXiT+g6xSI63+DxLXc=";
+    hash = "sha256-UXIQc5rXVaZuZj5xu2X9H38vKWAM+AoKrKfudovUhwA=";
   };
 
-  build-system = [ setuptools-scm ];
+  build-system = [
+    hatchling
+    hatch-vcs
+  ];
 
   dependencies = [
     html5tagger
@@ -38,11 +38,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "tracerite" ];
 
-  meta = with lib; {
+  meta = {
     description = "Tracebacks for Humans in Jupyter notebooks";
     homepage = "https://github.com/sanic-org/tracerite";
     changelog = "https://github.com/sanic-org/tracerite/releases/tag/${src.tag}";
-    license = licenses.unlicense;
-    maintainers = with maintainers; [ p0lyw0lf ];
+    license = lib.licenses.unlicense;
+    maintainers = with lib.maintainers; [ p0lyw0lf ];
   };
 }

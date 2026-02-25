@@ -50,9 +50,9 @@
   },
   "aks-preview": {
     "pname": "aks-preview",
-    "version": "19.0.0b10",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/aks_preview-19.0.0b10-py2.py3-none-any.whl",
-    "hash": "sha256-xteDVuaDzci2reA8MGECuGepCLlcwcWEb8fRCL3r7h8=",
+    "version": "19.0.0b18",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/aks_preview-19.0.0b18-py2.py3-none-any.whl",
+    "hash": "sha256-MN2tw4w7jd7d4Ej6c1mVR8XjOHuqLBADphn0GXzyuqk=",
     "description": "Provides a preview for upcoming AKS features"
   },
   "alb": {
@@ -246,9 +246,9 @@
   },
   "cosmosdb-preview": {
     "pname": "cosmosdb-preview",
-    "version": "1.6.1",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/cosmosdb_preview-1.6.1-py2.py3-none-any.whl",
-    "hash": "sha256-kfhttzgrlnyAoD6pe7PKjGHdKE0U6G1GYNe1a4ZA3f0=",
+    "version": "1.6.2",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/cosmosdb_preview-1.6.2-py2.py3-none-any.whl",
+    "hash": "sha256-le+/kTHWOoDqV/DDgl2yjTboQhx+X/S92PHt8Yqqpf4=",
     "description": "Microsoft Azure Command-Line Tools Cosmosdb-preview Extension"
   },
   "costmanagement": {
@@ -288,16 +288,16 @@
   },
   "databricks": {
     "pname": "databricks",
-    "version": "1.1.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/databricks-1.1.0-py3-none-any.whl",
-    "hash": "sha256-JOyOqiRtMscqYPJYVh8D9HNMB3irp5eqYs19gSt9RbI=",
+    "version": "1.2.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/databricks-1.2.0-py3-none-any.whl",
+    "hash": "sha256-3Zdbp+OP7mgXQ8cSjidSba8BO8kB4Bx1pWwyFFD+7Yw=",
     "description": "Microsoft Azure Command-Line Tools DatabricksClient Extension"
   },
   "datadog": {
     "pname": "datadog",
-    "version": "2.0.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/datadog-2.0.0-py3-none-any.whl",
-    "hash": "sha256-pdot6RlORnPubrsL8UWrqwUYFuGBYCPd+9DYG6fLklM=",
+    "version": "3.0.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/datadog-3.0.0-py3-none-any.whl",
+    "hash": "sha256-va/om8UaRL+oqYSjNK34UuBlwfH7TyTLCcODzAwh2Og=",
     "description": "Microsoft Azure Command-Line Tools Datadog Extension"
   },
   "datafactory": {
@@ -316,9 +316,9 @@
   },
   "dataprotection": {
     "pname": "dataprotection",
-    "version": "1.6.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/dataprotection-1.6.0-py3-none-any.whl",
-    "hash": "sha256-UkZbS0aIcaSM6KlI6CaP5lgq6m/cQophstc2k9ZegKw=",
+    "version": "1.8.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/dataprotection-1.8.0-py3-none-any.whl",
+    "hash": "sha256-/rod07bVvDFF6fjYuPf2J0ZU8mtsWDLLp9m7n6dJ998=",
     "description": "Microsoft Azure Command-Line Tools DataProtectionClient Extension"
   },
   "datashare": {
@@ -386,24 +386,31 @@
   },
   "dns-resolver": {
     "pname": "dns-resolver",
-    "version": "1.1.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/dns_resolver-1.1.0-py3-none-any.whl",
-    "hash": "sha256-xRmWnmsEcHW/TXuR2RsWCz7W3JDLrqPCxx19H8rZ2JE=",
+    "version": "1.2.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/dns_resolver-1.2.0-py3-none-any.whl",
+    "hash": "sha256-4Jaf0p22SygVmg722FOp4dkqHKlxYFoBRlvE05gmvEQ=",
     "description": "Microsoft Azure Command-Line Tools DnsResolverManagementClient Extension"
   },
   "durabletask": {
     "pname": "durabletask",
-    "version": "1.0.0b4",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/durabletask-1.0.0b4-py3-none-any.whl",
-    "hash": "sha256-L+gilyc4l/SbtEkXlmSuLfVvtolVJxO68Z/Ezl/YH1Y=",
+    "version": "1.0.0b5",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/durabletask-1.0.0b5-py3-none-any.whl",
+    "hash": "sha256-QO63iwBbXhiZU0YbvSDiMIM6xY3kvL0OYENKGRmHZT8=",
     "description": "Microsoft Azure Command-Line Tools Durabletask Extension"
   },
   "dynatrace": {
     "pname": "dynatrace",
-    "version": "1.1.1",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/dynatrace-1.1.1-py3-none-any.whl",
-    "hash": "sha256-uDqTcLrHCSrShT7CMl3GrMWLXjGGqvB2ofaLCrnyhvg=",
+    "version": "2.0.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/dynatrace-2.0.0-py3-none-any.whl",
+    "hash": "sha256-gS+82UbXH2fh7TrIsAxDqyaeM0iMwebt4v0ImJIs07Y=",
     "description": "Microsoft Azure Command-Line Tools Dynatrace Extension"
+  },
+  "edge-action": {
+    "pname": "edge-action",
+    "version": "1.0.0b2",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/edge_action-1.0.0b2-py3-none-any.whl",
+    "hash": "sha256-wtIkeQPRlEAEL/PXTVuPaUoQbabFKDKLc/RML+qaBGM=",
+    "description": "Microsoft Azure Command-Line Tools Extension for Azure Front Door Edge Actions"
   },
   "edgeorder": {
     "pname": "edgeorder",
@@ -456,9 +463,9 @@
   },
   "fleet": {
     "pname": "fleet",
-    "version": "1.8.1",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/fleet-1.8.1-py3-none-any.whl",
-    "hash": "sha256-842zQA4Jk0dp8jMCro5lut4Ro5u7ny1sp095uqXyR9k=",
+    "version": "1.8.2",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/fleet-1.8.2-py3-none-any.whl",
+    "hash": "sha256-3YRF7R7NB8zPonNcgv4Cfs3gk55pgTAbeo1tGOH6fsA=",
     "description": "Microsoft Azure Command-Line Tools Fleet Extension"
   },
   "fluid-relay": {
@@ -470,16 +477,16 @@
   },
   "footprint": {
     "pname": "footprint",
-    "version": "1.0.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/footprint-1.0.0-py3-none-any.whl",
-    "hash": "sha256-SqWSiL9Gz9aFGfH39j0+M68W2AYyuEwoPMcVISkmCyw=",
+    "version": "1.0.1b1",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/footprint-1.0.1b1-py3-none-any.whl",
+    "hash": "sha256-RjWu9LF27ji8M2uADiUjlJsnf+30DkCT+d1AU3EOf0s=",
     "description": "Microsoft Azure Command-Line Tools FootprintMonitoringManagementClient Extension"
   },
   "front-door": {
     "pname": "front-door",
-    "version": "1.3.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/front_door-1.3.0-py3-none-any.whl",
-    "hash": "sha256-kJXpPk8IfhFbVbInxaBLq894/nzyxalvVZQkQ37PTRk=",
+    "version": "1.4.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/front_door-1.4.0-py3-none-any.whl",
+    "hash": "sha256-9chF08+QQe2WYR/vvifE9AzjYV4X26TweeGf2U5zcGA=",
     "description": "Manage networking Front Doors"
   },
   "fzf": {
@@ -547,9 +554,9 @@
   },
   "image-copy-extension": {
     "pname": "image-copy-extension",
-    "version": "1.0.3",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/image_copy_extension-1.0.3-py2.py3-none-any.whl",
-    "hash": "sha256-YTQFsRYinh4Bk2p747oyMAsC3a9rKiR444woUeGTKGg=",
+    "version": "1.0.4",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/image_copy_extension-1.0.4-py2.py3-none-any.whl",
+    "hash": "sha256-qeJ0loQhOGaGRgGkhkJZXvn9nKb9fOI9EErKJR0oXto=",
     "description": "Support for copying managed vm images between regions"
   },
   "image-gallery": {
@@ -687,9 +694,9 @@
   },
   "migrate": {
     "pname": "migrate",
-    "version": "2.0.1b1",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/migrate-2.0.1b1-py3-none-any.whl",
-    "hash": "sha256-vRMg/oeqSFXwZaB6J6RO51U6kjWdE4O7EWc/i4LxOmU=",
+    "version": "3.0.0b2",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/migrate-3.0.0b2-py3-none-any.whl",
+    "hash": "sha256-UShJtaTygedXgcITDUStH3PAhxyvFBtwMutz/vYJ+s8=",
     "description": "Support for Azure Migrate preview"
   },
   "mixed-reality": {
@@ -698,13 +705,6 @@
     "url": "https://azcliprod.blob.core.windows.net/cli-extensions/mixed_reality-1.0.0b1-py2.py3-none-any.whl",
     "hash": "sha256-o8Grh7xfaLhlvW+T1WLkDR6kvcSFqs/gkAZz3j+rmGk=",
     "description": "Mixed Reality Azure CLI Extension"
-  },
-  "mobile-network": {
-    "pname": "mobile-network",
-    "version": "1.0.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/mobile_network-1.0.0-py3-none-any.whl",
-    "hash": "sha256-LZVypO1wbfj2JsYgNq0i9GoVsRMnP4/5sGMTo4Cif1Y=",
-    "description": "Microsoft Azure Command-Line Tools MobileNetwork Extension"
   },
   "mongo-db": {
     "pname": "mongo-db",
@@ -771,16 +771,16 @@
   },
   "nginx": {
     "pname": "nginx",
-    "version": "2.0.0b8",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/nginx-2.0.0b8-py2.py3-none-any.whl",
-    "hash": "sha256-d/ELXpGjr/oR7rnIQqddcWA88X2n5BizhAuWYSNb1JM=",
+    "version": "2.0.0b9",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/nginx-2.0.0b9-py2.py3-none-any.whl",
+    "hash": "sha256-zJDRh3cN4Qdz4w3QOAuhs+2+C+ku/lKjP54Am3wJXTk=",
     "description": "Microsoft Azure Command-Line Tools Nginx Extension"
   },
   "notification-hub": {
     "pname": "notification-hub",
-    "version": "2.0.0b1",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/notification_hub-2.0.0b1-py3-none-any.whl",
-    "hash": "sha256-vjdwj26RG1HlatFfN/Jqh5BObSJQ1WmM8DWL5kbD3uo=",
+    "version": "2.0.0b2",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/notification_hub-2.0.0b2-py3-none-any.whl",
+    "hash": "sha256-8PxOPTS1YQGo5mdjAnDo5uU44DPiG//SfuEhWDS7yfQ=",
     "description": "Microsoft Azure Command-Line Tools Notification Hub Extension"
   },
   "nsp": {
@@ -799,9 +799,9 @@
   },
   "oracle-database": {
     "pname": "oracle-database",
-    "version": "1.0.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/oracle_database-1.0.0-py3-none-any.whl",
-    "hash": "sha256-CtcW4Rc1noFCf4yRSC8lkgMYd5ZMaVLnaLZhSNtU284=",
+    "version": "2.0.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/oracle_database-2.0.0-py3-none-any.whl",
+    "hash": "sha256-vsL+QDpFmnZX+Pl2j8rSC7RM3bpFuaQFZzav56F8OdU=",
     "description": "Microsoft Azure Command-Line Tools OracleDatabase Extension"
   },
   "orbital": {
@@ -848,9 +848,9 @@
   },
   "pscloud": {
     "pname": "pscloud",
-    "version": "1.0.0b1",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/pscloud-1.0.0b1-py3-none-any.whl",
-    "hash": "sha256-aIobuwrf1z72gUzYZLLIzk1mRrsbIfWlxgpfJ+1n20U=",
+    "version": "1.0.1",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/pscloud-1.0.1-py3-none-any.whl",
+    "hash": "sha256-r2uk4grRbB6t5PiZFVUCtx+rbJcbvxv0f02K4MAQ48k=",
     "description": "Microsoft Azure Command-Line Tools Pscloud Extension"
   },
   "purview": {
@@ -974,9 +974,9 @@
   },
   "stack-hci-vm": {
     "pname": "stack-hci-vm",
-    "version": "1.10.4",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/stack_hci_vm-1.10.4-py3-none-any.whl",
-    "hash": "sha256-MjcpQ7a+5Rw6Z7MAVzoa/qT6HSX6uaV+kWoiMBhK/JM=",
+    "version": "1.11.6",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/stack_hci_vm-1.11.6-py3-none-any.whl",
+    "hash": "sha256-JyLErSQLS0cMKClSc9q97gdwCtfr0X2ilcP4EuE0V60=",
     "description": "Microsoft Azure Command-Line Tools Stack-HCi-VM Extension"
   },
   "standbypool": {
@@ -1121,9 +1121,9 @@
   },
   "workload-orchestration": {
     "pname": "workload-orchestration",
-    "version": "4.1.0",
-    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/workload_orchestration-4.1.0-py3-none-any.whl",
-    "hash": "sha256-9+pQFtpZzIEk4971hNJuB6gxu7WtRtDO69zt6jgq60A=",
+    "version": "5.0.0",
+    "url": "https://azcliprod.blob.core.windows.net/cli-extensions/workload_orchestration-5.0.0-py3-none-any.whl",
+    "hash": "sha256-Hp8Y50FHwR7L+2MXTEW1QXLMZJa8eUqwQCi+B0FPooU=",
     "description": "Microsoft Azure Command-Line Tools WorkloadOperations Extension"
   },
   "workloads": {
